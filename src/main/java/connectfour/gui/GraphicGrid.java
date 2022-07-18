@@ -89,9 +89,9 @@ public class GraphicGrid extends JPanel {
 	}
 
 	/* procedura di inserzione automatica di un gettone */
-	void loadGrid(int c) {
+	public void loadGrid(int c) {
 		column[c].loadPawn();
-		if (!ownerFrm.launcherApp.netenabled) {
+		if (!ownerFrm.launcherApp.networkGame.netenabled) {
 			ownerFrm.menuMoveBack.setEnabled(true);
 			ownerFrm.moveBack.setEnabled(true);
 		}

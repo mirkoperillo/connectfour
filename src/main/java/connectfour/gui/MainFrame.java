@@ -76,9 +76,9 @@ public class MainFrame extends JFrame {
 	JMenuItem menuGameNew;
 	JMenuItem menuGameQuit;
 	JMenu menuMove;
-	JMenuItem menuMoveBack;
-	JMenuItem menuMovePlay;
-	JMenuItem menuMoveForward;
+	public JMenuItem menuMoveBack;
+	public JMenuItem menuMovePlay;
+	public JMenuItem menuMoveForward;
 	JMenu menuSettings;
 	JMenu menuSettingsLevel;
 	JCheckBoxMenuItem menuSettingsLevelNormal;
@@ -90,10 +90,10 @@ public class MainFrame extends JFrame {
 
 	/* dichiarazione della toolbar e delle relative icone */
 	JToolBar toolBar;
-	JButton newGame;
-	JButton moveBack;
-	JButton playHint;
-	JButton moveForward;
+	public JButton newGame;
+	public JButton moveBack;
+	public JButton playHint;
+	public JButton moveForward;
 
 	/*
 	 * dichiarazione della barra di stato: essa fornisce utili informazioni durante
@@ -423,7 +423,7 @@ public class MainFrame extends JFrame {
 		statusBar.setText(msg);
 
 		/* caricamento di eventuale partita non terminata */
-		if (launcherApp.marker > 0 && !launcherApp.netenabled) {
+		if (launcherApp.marker > 0 && !launcherApp.networkGame.netenabled) {
 			loadGame();
 			/* se tocca al giocatore 1 che � computer, gioca */
 			if (launcherApp.gameGrid.currentPlayer > 0 && !launcherApp.one.isHuman())
@@ -432,7 +432,7 @@ public class MainFrame extends JFrame {
 				this.menuMovePlay_actionPerformed(null);
 		} else {
 			/* se il primo giocatore � il computer, gioca la sua mossa */
-			if (!launcherApp.one.isHuman() && !launcherApp.netenabled)
+			if (!launcherApp.one.isHuman() && !launcherApp.networkGame.netenabled)
 				this.menuMovePlay_actionPerformed(null);
 		}
 	}
@@ -453,7 +453,7 @@ public class MainFrame extends JFrame {
 		 * in rete non � concesso iniziare una partita quando si vuole; � automatico
 		 * dopo la fine di una partita
 		 */
-		if (launcherApp.netenabled && !gameOver)
+		if (launcherApp.networkGame.netenabled && !gameOver)
 			return;
 
 		/* svuota la griglia grafica virtuale */
@@ -466,7 +466,7 @@ public class MainFrame extends JFrame {
 		gameOver = false;
 		removing = false;
 		launcherApp.gameGrid.currentPlayer = 1;
-		if (launcherApp.netenabled)
+		if (launcherApp.networkGame.netenabled)
 			launcherApp.gameGrid.currentPlayer *= -1;
 
 		/* svuotato il vettore mosse */
@@ -476,7 +476,7 @@ public class MainFrame extends JFrame {
 		graphicGrid.updateUI();
 
 		/* servizi disabilitati in modalita' rete */
-		if (!launcherApp.netenabled) {
+		if (!launcherApp.networkGame.netenabled) {
 			menuMoveBack.setEnabled(false);
 			menuMovePlay.setEnabled(true);
 			menuMoveForward.setEnabled(false);
@@ -527,7 +527,7 @@ public class MainFrame extends JFrame {
 		launcherApp.marker = 0;
 
 		graphicGrid.updateUI();
-		if (!launcherApp.network) {
+		if (!launcherApp.networkGame.network) {
 			newGame.setEnabled(true);
 			menuMoveBack.setEnabled(false);
 			menuMovePlay.setEnabled(true);
@@ -545,33 +545,33 @@ public class MainFrame extends JFrame {
 		}
 
 		/* se abilitiamo la modalita' rete per la prima volta */
-		if (launcherApp.network && !launcherApp.netenabled) {
+		if (launcherApp.networkGame.network && !launcherApp.networkGame.netenabled) {
 			/* apre il thread */
 			Game g = new Game(launcherApp);
 			g.start();
 		} else {
 			/* se abbiamo appena finito di giocare in rete... */
-			if (launcherApp.netenabled) {
+			if (launcherApp.networkGame.netenabled) {
 				/* ...e vogliamo smettere */
-				if (!launcherApp.network) {
-					launcherApp.netenabled = false;
+				if (!launcherApp.networkGame.network) {
+					launcherApp.networkGame.netenabled = false;
 					try {
-						launcherApp.s.close();
+						launcherApp.networkGame.s.close();
 					} catch (Exception ex) {
 					}
 					try {
-						launcherApp.ss.close();
+						launcherApp.networkGame.ss.close();
 					} catch (Exception exc) {
 					}
 				}
 				/* ...e vogliamo continuare con altri giocatori in rete */
 				else {
 					try {
-						launcherApp.s.close();
+						launcherApp.networkGame.s.close();
 					} catch (Exception ex) {
 					}
 					try {
-						launcherApp.ss.close();
+						launcherApp.networkGame.ss.close();
 					} catch (Exception exc) {
 					}
 					Game g = new Game(launcherApp);
@@ -580,7 +580,7 @@ public class MainFrame extends JFrame {
 			}
 		}
 		/* se il computer � il primo a dover giocare, lo fa */
-		if (!launcherApp.one.isHuman() && !launcherApp.network) {
+		if (!launcherApp.one.isHuman() && !launcherApp.networkGame.network) {
 			this.menuMovePlay_actionPerformed(null);
 		}
 	}
@@ -633,7 +633,11 @@ public class MainFrame extends JFrame {
 		writer.println("name2 = \'" + launcherApp.two.getName() + "\';");
 		writer.println("\n//network");
 		/* ultimo avversario in rete */
-		writer.println("ip = \'" + launcherApp.hostName + "\';");
+		if (launcherApp.networkGame.network) {
+			writer.println("ip = \'" + launcherApp.networkGame.hostName + "\';");
+		} else {
+			writer.println("ip = \'\';");
+		}
 		writer.println("\n//game");
 		/* livello di gioco pc normale */
 		if (menuSettingsLevelNormal.getState())

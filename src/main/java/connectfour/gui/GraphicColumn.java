@@ -97,10 +97,10 @@ public class GraphicColumn extends JPanel {
 		 * protezione dall'evento 'mouseClicked' durante una partita in rete mentre il
 		 * turno � dell'avversario oppure dopo avere inserito un gettone
 		 */
-		if (ownerGrd.ownerFrm.launcherApp.netenabled)
-			if (ownerGrd.ownerFrm.launcherApp.myColumn != -1)
+		if (ownerGrd.ownerFrm.launcherApp.networkGame.netenabled)
+			if (ownerGrd.ownerFrm.launcherApp.networkGame.myColumn != -1)
 				return;
-		if (ownerGrd.ownerFrm.launcherApp.netenabled && !ownerGrd.ownerFrm.launcherApp.neturn)
+		if (ownerGrd.ownerFrm.launcherApp.networkGame.netenabled && !ownerGrd.ownerFrm.launcherApp.networkGame.neturn)
 			return;
 
 		/*
@@ -129,7 +129,7 @@ public class GraphicColumn extends JPanel {
 						ownerGrd.ownerFrm.launcherApp.moves[i] = -1;
 				}
 
-				if (!ownerGrd.ownerFrm.launcherApp.netenabled) {
+				if (!ownerGrd.ownerFrm.launcherApp.networkGame.netenabled) {
 					/*
 					 * dopo aver inserito un gettone automaticamente possiamo anche toglierlo
 					 */
@@ -203,7 +203,7 @@ public class GraphicColumn extends JPanel {
 					/*
 					 * non appena il gioco in rete finisce, riparte una nuova partita
 					 */
-					if (ownerGrd.ownerFrm.launcherApp.netenabled) {
+					if (ownerGrd.ownerFrm.launcherApp.networkGame.netenabled) {
 						ownerGrd.ownerFrm.menuQuickNew_actionPerformed(null);
 					}
 				}
@@ -214,7 +214,7 @@ public class GraphicColumn extends JPanel {
 					ownerGrd.ownerFrm.removing = false;
 					String message = "Partita pari...";
 					ownerGrd.ownerFrm.gameOver(message);
-					if (ownerGrd.ownerFrm.launcherApp.netenabled) {
+					if (ownerGrd.ownerFrm.launcherApp.networkGame.netenabled) {
 						ownerGrd.ownerFrm.menuQuickNew_actionPerformed(null);
 					}
 				}
@@ -223,8 +223,8 @@ public class GraphicColumn extends JPanel {
 				 * la colonna giocata passa da -1 a 'id' (ossia questa colonna), nel caso
 				 * giocassimo in rete
 				 */
-				if (ownerGrd.ownerFrm.launcherApp.netenabled)
-					ownerGrd.ownerFrm.launcherApp.myColumn = id;
+				if (ownerGrd.ownerFrm.launcherApp.networkGame.netenabled)
+					ownerGrd.ownerFrm.launcherApp.networkGame.myColumn = id;
 
 				/* cambia il turno del giocatore */
 				ownerGrd.ownerFrm.launcherApp.gameGrid.changeTurn();
@@ -330,7 +330,7 @@ public class GraphicColumn extends JPanel {
 				/*
 				 * quando invece il gettone viene caricato dalla rete (sempre persa)
 				 */
-				if (ownerGrd.ownerFrm.launcherApp.netenabled)
+				if (ownerGrd.ownerFrm.launcherApp.networkGame.netenabled)
 					message = "Hai perso...";
 				ownerGrd.ownerFrm.gameOver(message);
 
@@ -342,7 +342,7 @@ public class GraphicColumn extends JPanel {
 				ownerGrd.startC = -1;
 				ownerGrd.startR = -1;
 
-				if (ownerGrd.ownerFrm.launcherApp.netenabled) {
+				if (ownerGrd.ownerFrm.launcherApp.networkGame.netenabled) {
 					ownerGrd.ownerFrm.menuQuickNew_actionPerformed(null);
 				}
 			}
@@ -352,7 +352,7 @@ public class GraphicColumn extends JPanel {
 				ownerGrd.ownerFrm.removing = false;
 				String message = "Partita pari...";
 				ownerGrd.ownerFrm.gameOver(message);
-				if (ownerGrd.ownerFrm.launcherApp.netenabled)
+				if (ownerGrd.ownerFrm.launcherApp.networkGame.netenabled)
 					ownerGrd.ownerFrm.menuQuickNew_actionPerformed(null);
 			}
 		}

@@ -30,6 +30,6 @@ public class Game extends Thread {
 
 	/* run del thread */
 	public void run() {
-		gui.enable_network();
+		gui.networkGame.enable_network();
 	}
 }

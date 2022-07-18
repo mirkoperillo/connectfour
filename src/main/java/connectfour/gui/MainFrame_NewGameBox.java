@@ -83,18 +83,15 @@ public class MainFrame_NewGameBox extends JDialog {
 		newGame.setFont(new java.awt.Font("Dialog", 0, 11));
 
 		/*
-		 * pulsante per la scelta del nuovo tipo di gioco: singolo giocatore,
-		 * contro il computer, con la possibilit� di scegliere chi inizia il
-		 * match; multigiocatore, con la possibilit� di scegliere la modalit� in
-		 * rete
+		 * pulsante per la scelta del nuovo tipo di gioco: singolo giocatore, contro il
+		 * computer, con la possibilit� di scegliere chi inizia il match;
+		 * multigiocatore, con la possibilit� di scegliere la modalit� in rete
 		 */
 		singlePlayer = new JRadioButton();
 		singlePlayer.setFont(new java.awt.Font("Dialog", 0, 11));
 		singlePlayer.setText("Single Player, as:");
-		if ((ownerFrm.launcherApp.one.isHuman() && !ownerFrm.launcherApp.two
-				.isHuman())
-				|| (!ownerFrm.launcherApp.one.isHuman() && ownerFrm.launcherApp.two
-						.isHuman())) {
+		if ((ownerFrm.launcherApp.one.isHuman() && !ownerFrm.launcherApp.two.isHuman())
+				|| (!ownerFrm.launcherApp.one.isHuman() && ownerFrm.launcherApp.two.isHuman())) {
 			singlePlayer.setSelected(true);
 		}
 		singlePlayer.addActionListener(new ActionListener() {
@@ -135,8 +132,7 @@ public class MainFrame_NewGameBox extends JDialog {
 		multiPlayer = new JRadioButton();
 		multiPlayer.setFont(new java.awt.Font("Dialog", 0, 11));
 		multiPlayer.setText("Multi Player");
-		if (ownerFrm.launcherApp.one.isHuman()
-				&& ownerFrm.launcherApp.two.isHuman()) {
+		if (ownerFrm.launcherApp.one.isHuman() && ownerFrm.launcherApp.two.isHuman()) {
 			multiPlayer.setSelected(true);
 		}
 		multiPlayer.addActionListener(new ActionListener() {
@@ -151,7 +147,7 @@ public class MainFrame_NewGameBox extends JDialog {
 		network.setText("Network, versus: ");
 		if (!multiPlayer.isSelected())
 			network.setEnabled(false);
-		if (ownerFrm.launcherApp.network)
+		if (ownerFrm.launcherApp.networkGame.network)
 			network.setSelected(true);
 		network.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -160,18 +156,17 @@ public class MainFrame_NewGameBox extends JDialog {
 		});
 
 		/*
-		 * il nome del computer collegato in rete con cui intendiamo fare una
-		 * partita
+		 * il nome del computer collegato in rete con cui intendiamo fare una partita
 		 */
 		enemyAddress = new JTextField();
 		enemyAddress.setFont(new java.awt.Font("Dialog", 0, 11));
-		enemyAddress.setText(ownerFrm.launcherApp.hostName);
+		enemyAddress.setText(ownerFrm.launcherApp.networkGame.hostName);
 		if (!network.isSelected())
 			enemyAddress.setEnabled(false);
 
 		/*
-		 * il pulsante OK: settaggio del testo del pulsante, del font e
-		 * dell'azione di pressione del pulsante
+		 * il pulsante OK: settaggio del testo del pulsante, del font e dell'azione di
+		 * pressione del pulsante
 		 */
 		okButton = new JButton("OK");
 		okButton.setFont(new java.awt.Font("Dialog", 0, 11));
@@ -182,8 +177,8 @@ public class MainFrame_NewGameBox extends JDialog {
 		});
 
 		/*
-		 * il pulsante Cancel: settaggio del testo del pulsante, del font e
-		 * della azione di pressione del pulsante
+		 * il pulsante Cancel: settaggio del testo del pulsante, del font e della azione
+		 * di pressione del pulsante
 		 */
 		cancelButton = new JButton("Cancel");
 		cancelButton.setFont(new java.awt.Font("Dialog", 0, 11));
@@ -256,8 +251,8 @@ public class MainFrame_NewGameBox extends JDialog {
 	}
 
 	/*
-	 * pressione del tasto annulla: non porta alcuna modifica e chiude il
-	 * messaggio ritornando al frame chiamante
+	 * pressione del tasto annulla: non porta alcuna modifica e chiude il messaggio
+	 * ritornando al frame chiamante
 	 */
 	public void cancelButton_actionPerformed(ActionEvent e) {
 		ownerFrm.launcherApp.beginNewMatch = false;
@@ -279,7 +274,7 @@ public class MainFrame_NewGameBox extends JDialog {
 				ownerFrm.launcherApp.one.setHuman(false);
 				ownerFrm.launcherApp.two.setHuman(true);
 			}
-			ownerFrm.launcherApp.network = false;
+			ownerFrm.launcherApp.networkGame.network = false;
 		}
 
 		/* scelta partita multigiocatore... */
@@ -288,14 +283,14 @@ public class MainFrame_NewGameBox extends JDialog {
 			ownerFrm.launcherApp.two.setHuman(true);
 			/* ...su un pc */
 			if (!network.isSelected() || !network.isEnabled()) {
-				ownerFrm.launcherApp.network = false;
+				ownerFrm.launcherApp.networkGame.network = false;
 			}
 			/* ...in rete */
 			else {
-				ownerFrm.launcherApp.network = true;
+				ownerFrm.launcherApp.networkGame.network = true;
 			}
 		}
-		ownerFrm.launcherApp.hostName = enemyAddress.getText();
+		ownerFrm.launcherApp.networkGame.hostName = enemyAddress.getText();
 		ownerFrm.launcherApp.beginNewMatch = true;
 		dispose();
 	}
