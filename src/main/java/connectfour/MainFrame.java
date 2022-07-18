@@ -54,8 +54,8 @@ public class MainFrame extends JFrame {
 	public boolean gameOver = false;
 
 	/*
-	 * flag che dichiara se stiamo modificando una configurazione: la modifica
-	 * si interrompe non appena inseriamo un nuovo gettone
+	 * flag che dichiara se stiamo modificando una configurazione: la modifica si
+	 * interrompe non appena inseriamo un nuovo gettone
 	 */
 	public boolean removing = false;
 
@@ -93,8 +93,8 @@ public class MainFrame extends JFrame {
 	JButton moveForward;
 
 	/*
-	 * dichiarazione della barra di stato: essa fornisce utili informazioni
-	 * durante il gioco
+	 * dichiarazione della barra di stato: essa fornisce utili informazioni durante
+	 * il gioco
 	 */
 	public JLabel statusBar = new JLabel(" ");
 
@@ -144,8 +144,7 @@ public class MainFrame extends JFrame {
 		menuGameNew.setBackground(SystemColor.control);
 		menuGameNew.setFont(new java.awt.Font("Dialog", 0, 11));
 		menuGameNew.setText("New");
-		menuGameNew.setAccelerator(javax.swing.KeyStroke.getKeyStroke(113, 0,
-				false));
+		menuGameNew.setAccelerator(javax.swing.KeyStroke.getKeyStroke(113, 0, false));
 		menuGameNew.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				menuGameNew_actionPerformed(e);
@@ -157,8 +156,7 @@ public class MainFrame extends JFrame {
 		menuGameQuit.setBackground(SystemColor.control);
 		menuGameQuit.setFont(new java.awt.Font("Dialog", 0, 11));
 		menuGameQuit.setText("Quit");
-		menuGameQuit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(81,
-				java.awt.event.KeyEvent.ALT_MASK, false));
+		menuGameQuit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(81, java.awt.event.KeyEvent.ALT_MASK, false));
 		menuGameQuit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -284,8 +282,7 @@ public class MainFrame extends JFrame {
 		menuHelpHelp.setBackground(SystemColor.control);
 		menuHelpHelp.setFont(new java.awt.Font("Dialog", 0, 11));
 		menuHelpHelp.setText("Help");
-		menuHelpHelp.setAccelerator(javax.swing.KeyStroke.getKeyStroke(112, 0,
-				false));
+		menuHelpHelp.setAccelerator(javax.swing.KeyStroke.getKeyStroke(112, 0, false));
 		menuHelpHelp.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				menuHelpHelp_actionPerformed(e);
@@ -300,11 +297,9 @@ public class MainFrame extends JFrame {
 		toolBar.setOrientation(toolBar.HORIZONTAL);
 
 		/* inizializzazione delle icone della toolbar */
-		newGame = new JButton(new ImageIcon(
-				MainFrame.class.getResource("new_disabled.gif")));
+		newGame = new JButton(new ImageIcon(getClass().getResource("/icons/new_disabled.gif")));
 		newGame.setRolloverEnabled(true);
-		newGame.setRolloverIcon(new ImageIcon(MainFrame.class
-				.getResource("new_enabled.gif")));
+		newGame.setRolloverIcon(new ImageIcon(getClass().getResource("/icons/new_enabled.gif")));
 		newGame.setRequestFocusEnabled(false);
 		newGame.setBorderPainted(false);
 		newGame.setToolTipText("New game");
@@ -319,11 +314,9 @@ public class MainFrame extends JFrame {
 			}
 		});
 
-		moveBack = new JButton(new ImageIcon(
-				MainFrame.class.getResource("back_disabled.gif")));
+		moveBack = new JButton(new ImageIcon(getClass().getResource("/icons/back_disabled.gif")));
 		moveBack.setRolloverEnabled(true);
-		moveBack.setRolloverIcon(new ImageIcon(MainFrame.class
-				.getResource("back_enabled.gif")));
+		moveBack.setRolloverIcon(new ImageIcon(getClass().getResource("/icons/back_enabled.gif")));
 		moveBack.setRequestFocusEnabled(false);
 		moveBack.setBorderPainted(false);
 		moveBack.setToolTipText("Undo");
@@ -339,11 +332,9 @@ public class MainFrame extends JFrame {
 		});
 		moveBack.setEnabled(false);
 
-		playHint = new JButton(new ImageIcon(
-				MainFrame.class.getResource("play_disabled.gif")));
+		playHint = new JButton(new ImageIcon(getClass().getResource("/icons/play_disabled.gif")));
 		playHint.setRolloverEnabled(true);
-		playHint.setRolloverIcon(new ImageIcon(MainFrame.class
-				.getResource("play_enabled.gif")));
+		playHint.setRolloverIcon(new ImageIcon(getClass().getResource("/icons/play_enabled.gif")));
 		playHint.setRequestFocusEnabled(false);
 		playHint.setBorderPainted(false);
 		playHint.setToolTipText("Hint");
@@ -358,11 +349,9 @@ public class MainFrame extends JFrame {
 			}
 		});
 
-		moveForward = new JButton(new ImageIcon(
-				MainFrame.class.getResource("forward_disabled.gif")));
+		moveForward = new JButton(new ImageIcon(getClass().getResource("/icons/forward_disabled.gif")));
 		moveForward.setRolloverEnabled(true);
-		moveForward.setRolloverIcon(new ImageIcon(MainFrame.class
-				.getResource("forward_enabled.gif")));
+		moveForward.setRolloverIcon(new ImageIcon(getClass().getResource("/icons/forward_enabled.gif")));
 		moveForward.setRequestFocusEnabled(false);
 		moveForward.setBorderPainted(false);
 		moveForward.setToolTipText("Redo");
@@ -412,8 +401,7 @@ public class MainFrame extends JFrame {
 		graphicGrid.setPreferredSize(new Dimension(340, 355));
 
 		/* assemblaggio del frame */
-		setIconImage(Toolkit.getDefaultToolkit().createImage(
-				MainFrame.class.getResource("C4.gif")));
+		setIconImage(Toolkit.getDefaultToolkit().createImage(getClass().getResource("/icons/C4.gif")));
 		setTitle("Connect 4 XP");
 		setSize(350, 380);
 
@@ -435,11 +423,9 @@ public class MainFrame extends JFrame {
 		if (launcherApp.marker > 0 && !launcherApp.netenabled) {
 			loadGame();
 			/* se tocca al giocatore 1 che � computer, gioca */
-			if (launcherApp.gameGrid.currentPlayer > 0
-					&& !launcherApp.one.isHuman())
+			if (launcherApp.gameGrid.currentPlayer > 0 && !launcherApp.one.isHuman())
 				this.menuMovePlay_actionPerformed(null);
-			else if (launcherApp.gameGrid.currentPlayer < 0
-					&& !launcherApp.two.isHuman())
+			else if (launcherApp.gameGrid.currentPlayer < 0 && !launcherApp.two.isHuman())
 				this.menuMovePlay_actionPerformed(null);
 		} else {
 			/* se il primo giocatore � il computer, gioca la sua mossa */
@@ -449,8 +435,8 @@ public class MainFrame extends JFrame {
 	}
 
 	/*
-	 * carica l'ultima partita giocata non portata a termine dal vettore
-	 * moves[], inserendo i gettoni nella griglia tramite il metodo loadGrid
+	 * carica l'ultima partita giocata non portata a termine dal vettore moves[],
+	 * inserendo i gettoni nella griglia tramite il metodo loadGrid
 	 */
 	void loadGame() {
 		for (int i = 0; i < launcherApp.marker; i++) {
@@ -461,8 +447,8 @@ public class MainFrame extends JFrame {
 	/* avvio veloce dalla toolbar */
 	public void menuQuickNew_actionPerformed(ActionEvent e) {
 		/*
-		 * in rete non � concesso iniziare una partita quando si vuole; �
-		 * automatico dopo la fine di una partita
+		 * in rete non � concesso iniziare una partita quando si vuole; � automatico
+		 * dopo la fine di una partita
 		 */
 		if (launcherApp.netenabled && !gameOver)
 			return;
@@ -513,13 +499,11 @@ public class MainFrame extends JFrame {
 	/* attivazione di Game>New, apertura di una nuova partita con dialog */
 	public void menuGameNew_actionPerformed(ActionEvent e) {
 		/* apertura del dialog con le impostazioni di gioco */
-		MainFrame_NewGameBox dlg = new MainFrame_NewGameBox((JFrame) this, "",
-				true);
+		MainFrame_NewGameBox dlg = new MainFrame_NewGameBox((JFrame) this, "", true);
 		Dimension dlgSize = dlg.getPreferredSize();
 		Dimension frmSize = getSize();
 		Point loc = getLocation();
-		dlg.setLocation((frmSize.width - dlgSize.width) / 2 + loc.x,
-				(frmSize.height - dlgSize.height) / 2 + loc.y);
+		dlg.setLocation((frmSize.width - dlgSize.width) / 2 + loc.x, (frmSize.height - dlgSize.height) / 2 + loc.y);
 		dlg.pack();
 		dlg.show();
 
@@ -608,8 +592,8 @@ public class MainFrame extends JFrame {
 
 		if (!gameOver && launcherApp.moves[0] != -1) {
 			/*
-			 * salva la partita prima di uscire, in modo che essa sia
-			 * recuperabile al seguente avvio del programma
+			 * salva la partita prima di uscire, in modo che essa sia recuperabile al
+			 * seguente avvio del programma
 			 */
 			saveCfg.createNewFile();
 			PrintStream writer = new PrintStream(new FileOutputStream(saveCfg));
@@ -668,8 +652,8 @@ public class MainFrame extends JFrame {
 			/* se prima la partita era finita puo' essere rigiocata */
 			gameOver = false;
 			/*
-			 * se la partita e' contro un pc, torna indietro fino alla nostra
-			 * mossa precedente, ossia di due mosse; altrimenti di una
+			 * se la partita e' contro un pc, torna indietro fino alla nostra mossa
+			 * precedente, ossia di due mosse; altrimenti di una
 			 */
 			if (launcherApp.gameGrid.currentPlayer > 0) {
 				if (!launcherApp.two.isHuman() && launcherApp.one.isHuman()) {
@@ -708,13 +692,12 @@ public class MainFrame extends JFrame {
 	/* attivazione di Move>Play */
 	public void menuMovePlay_actionPerformed(ActionEvent e) {
 		/*
-		 * se la partita e' ancora aperta, si crea l'albero delle scelte, quindi
-		 * si fa scegliere la mossa all'intelligenza artificiale
+		 * se la partita e' ancora aperta, si crea l'albero delle scelte, quindi si fa
+		 * scegliere la mossa all'intelligenza artificiale
 		 */
 		if (!gameOver) {
 			EuristicTree tmpTree = new EuristicTree();
-			tmpTree.build(launcherApp.gameGrid,
-					launcherApp.gameGrid.currentPlayer, launcherApp.level);
+			tmpTree.build(launcherApp.gameGrid, launcherApp.gameGrid.currentPlayer, launcherApp.level);
 			int toPlay = tmpTree.play(launcherApp.gameGrid.currentPlayer);
 			graphicGrid.loadGrid(toPlay);
 			launcherApp.moves[launcherApp.marker] = toPlay;
@@ -750,8 +733,7 @@ public class MainFrame extends JFrame {
 		/*
 		 * la funzionalita' avanti viene abilitata quando si torna indietro; si
 		 * disabilita in rete sempre, a fine partita, o quando viene fatta
-		 * un'inserzione. Se il computer ha gia' giocato, si reinseriscono due
-		 * gettoni.
+		 * un'inserzione. Se il computer ha gia' giocato, si reinseriscono due gettoni.
 		 */
 		if (launcherApp.moves[launcherApp.marker] != -1) {
 			graphicGrid.loadGrid(launcherApp.moves[launcherApp.marker]);
@@ -797,13 +779,11 @@ public class MainFrame extends JFrame {
 
 	/* attivazione Settings>Playername */
 	public void menuSettingsPlayername_actionPerformed(ActionEvent e) {
-		MainFrame_PlayerNameBox dlg = new MainFrame_PlayerNameBox(this,
-				"Players' names", true);
+		MainFrame_PlayerNameBox dlg = new MainFrame_PlayerNameBox(this, "Players' names", true);
 		Dimension dlgSize = dlg.getPreferredSize();
 		Dimension frmSize = getSize();
 		Point loc = getLocation();
-		dlg.setLocation((frmSize.width - dlgSize.width) / 2 + loc.x,
-				(frmSize.height - dlgSize.height) / 2 + loc.y);
+		dlg.setLocation((frmSize.width - dlgSize.width) / 2 + loc.x, (frmSize.height - dlgSize.height) / 2 + loc.y);
 		dlg.show();
 	}
 
@@ -813,8 +793,7 @@ public class MainFrame extends JFrame {
 		Dimension dlgSize = dlg.getPreferredSize();
 		Dimension frmSize = getSize();
 		Point loc = getLocation();
-		dlg.setLocation((frmSize.width - dlgSize.width) / 2 + loc.x,
-				(frmSize.height - dlgSize.height) / 2 + loc.y);
+		dlg.setLocation((frmSize.width - dlgSize.width) / 2 + loc.x, (frmSize.height - dlgSize.height) / 2 + loc.y);
 		dlg.setModal(true);
 		dlg.show();
 	}
@@ -822,8 +801,7 @@ public class MainFrame extends JFrame {
 	/* attivazione di ?>Help */
 	public void menuHelpHelp_actionPerformed(ActionEvent e) {
 		String htm = new File("").getAbsolutePath() + "/Help.htm";
-		String command = new String(
-				"C:/Programmi/Internet Explorer/iexplore.exe " + htm);
+		String command = new String("C:/Programmi/Internet Explorer/iexplore.exe " + htm);
 		try {
 			Runtime.getRuntime().exec(command);
 		} catch (IOException ioe) {
@@ -848,8 +826,7 @@ public class MainFrame extends JFrame {
 		Dimension dlgSize = dlg.getPreferredSize();
 		Dimension frmSize = getSize();
 		Point loc = getLocation();
-		dlg.setLocation((frmSize.width - dlgSize.width) / 2 + loc.x,
-				(frmSize.height - dlgSize.height) / 2 + loc.y);
+		dlg.setLocation((frmSize.width - dlgSize.width) / 2 + loc.x, (frmSize.height - dlgSize.height) / 2 + loc.y);
 		dlg.setModal(true);
 		dlg.show();
 	}

@@ -81,8 +81,7 @@ public class GraphicColumn extends JPanel {
 			row[i] = new JPanel();
 			row[i].setBackground(new Color(70, 70, 70));
 			imageLabel[i] = new JLabel();
-			imageLabel[i].setIcon(new ImageIcon(GraphicColumn.class
-					.getResource("empty.gif")));
+			imageLabel[i].setIcon(new ImageIcon(getClass().getResource("/icons/empty.gif")));
 			row[i].add(imageLabel[i], null);
 			this.add(row[i], i);
 		}
@@ -95,34 +94,30 @@ public class GraphicColumn extends JPanel {
 	public void clickOnColumn(MouseEvent e) {
 
 		/*
-		 * protezione dall'evento 'mouseClicked' durante una partita in rete
-		 * mentre il turno � dell'avversario oppure dopo avere inserito un
-		 * gettone
+		 * protezione dall'evento 'mouseClicked' durante una partita in rete mentre il
+		 * turno � dell'avversario oppure dopo avere inserito un gettone
 		 */
 		if (ownerGrd.ownerFrm.launcherApp.netenabled)
 			if (ownerGrd.ownerFrm.launcherApp.myColumn != -1)
 				return;
-		if (ownerGrd.ownerFrm.launcherApp.netenabled
-				&& !ownerGrd.ownerFrm.launcherApp.neturn)
+		if (ownerGrd.ownerFrm.launcherApp.netenabled && !ownerGrd.ownerFrm.launcherApp.neturn)
 			return;
 
 		/*
-		 * il click ha effetto soltanto su configurazioni di partite non
-		 * concluse oppure su quelle concluse ma da cui poi sono state rimossi
-		 * uno o pi� gettoni
+		 * il click ha effetto soltanto su configurazioni di partite non concluse oppure
+		 * su quelle concluse ma da cui poi sono state rimossi uno o pi� gettoni
 		 */
 		if (!ownerGrd.ownerFrm.gameOver || ownerGrd.ownerFrm.removing) {
 			int r = ownerGrd.ownerFrm.launcherApp.gameGrid.insertMove(id,
 					ownerGrd.ownerFrm.launcherApp.gameGrid.currentPlayer);
 			if (r < 0) {
-				ownerGrd.ownerFrm.statusBar.setText(" Column " + (id + 1)
-						+ " is full...");
+				ownerGrd.ownerFrm.statusBar.setText(" Column " + (id + 1) + " is full...");
 			} else {
 				ownerGrd.ownerFrm.removing = false;
 
 				/*
-				 * se l'inserzione avviene con successo non vengono mostrati
-				 * messaggi di errore o altri
+				 * se l'inserzione avviene con successo non vengono mostrati messaggi di errore
+				 * o altri
 				 */
 				ownerGrd.ownerFrm.statusBar.setText(" ");
 
@@ -136,20 +131,19 @@ public class GraphicColumn extends JPanel {
 
 				if (!ownerGrd.ownerFrm.launcherApp.netenabled) {
 					/*
-					 * dopo aver inserito un gettone automaticamente possiamo
-					 * anche toglierlo
+					 * dopo aver inserito un gettone automaticamente possiamo anche toglierlo
 					 */
 					ownerGrd.ownerFrm.menuMoveBack.setEnabled(true);
 					ownerGrd.ownerFrm.moveBack.setEnabled(true);
 					/*
-					 * dopo aver inserito un gettone automaticamente non �
-					 * possibile annullare un Undo
+					 * dopo aver inserito un gettone automaticamente non � possibile annullare un
+					 * Undo
 					 */
 					ownerGrd.ownerFrm.menuMoveForward.setEnabled(false);
 					ownerGrd.ownerFrm.moveForward.setEnabled(false);
 					/*
-					 * la 42esima � l'ultima mossa possibile: non ha pi� senso
-					 * accettare i suggerimenti
+					 * la 42esima � l'ultima mossa possibile: non ha pi� senso accettare i
+					 * suggerimenti
 					 */
 					if (ownerGrd.ownerFrm.launcherApp.marker >= 42) {
 						ownerGrd.ownerFrm.playHint.setEnabled(false);
@@ -160,11 +154,9 @@ public class GraphicColumn extends JPanel {
 				// row[r].removeAll();
 				// imageLabel[r].removeAll();
 				if (ownerGrd.ownerFrm.launcherApp.gameGrid.currentPlayer > 0)
-					imageLabel[r].setIcon(new ImageIcon(GraphicColumn.class
-							.getResource("yellow.gif")));
+					imageLabel[r].setIcon(new ImageIcon(getClass().getResource("/icons/yellow.gif")));
 				else
-					imageLabel[r].setIcon(new ImageIcon(GraphicColumn.class
-							.getResource("red.gif")));
+					imageLabel[r].setIcon(new ImageIcon(getClass().getResource("/icons/red.gif")));
 				// row[r].add(imageLabel[r], null);
 				// row[r].updateUI();
 				row[r].paint(row[r].getGraphics());
@@ -176,9 +168,8 @@ public class GraphicColumn extends JPanel {
 					ownerGrd.ownerFrm.removing = false;
 
 					/*
-					 * evidenziamo il quattro con una breve animazione che
-					 * termina non appena si d� conferma che la partita �
-					 * conclusa
+					 * evidenziamo il quattro con una breve animazione che termina non appena si d�
+					 * conferma che la partita � conclusa
 					 */
 					if (ownerGrd.ownerFrm.launcherApp.gameGrid.currentPlayer > 0)
 						ownerGrd.markFour(r, "yellow_spin.gif");
@@ -191,14 +182,10 @@ public class GraphicColumn extends JPanel {
 
 					/* se la partita � vinta dal giocatore 1... */
 					if (winner > 0)
-						message = "Hai vinto "
-								+ ownerGrd.ownerFrm.launcherApp.one.getName()
-								+ "!";
+						message = "Hai vinto " + ownerGrd.ownerFrm.launcherApp.one.getName() + "!";
 					/* se la partita � vinta dal giocatore 2... */
 					else
-						message = "Hai vinto "
-								+ ownerGrd.ownerFrm.launcherApp.two.getName()
-								+ "!";
+						message = "Hai vinto " + ownerGrd.ownerFrm.launcherApp.two.getName() + "!";
 
 					/* invio del messaggio di fine partita */
 					ownerGrd.ownerFrm.gameOver(message);
@@ -214,8 +201,7 @@ public class GraphicColumn extends JPanel {
 					ownerGrd.startR = -1;
 
 					/*
-					 * non appena il gioco in rete finisce, riparte una nuova
-					 * partita
+					 * non appena il gioco in rete finisce, riparte una nuova partita
 					 */
 					if (ownerGrd.ownerFrm.launcherApp.netenabled) {
 						ownerGrd.ownerFrm.menuQuickNew_actionPerformed(null);
@@ -234,8 +220,8 @@ public class GraphicColumn extends JPanel {
 				}
 
 				/*
-				 * la colonna giocata passa da -1 a 'id' (ossia questa colonna),
-				 * nel caso giocassimo in rete
+				 * la colonna giocata passa da -1 a 'id' (ossia questa colonna), nel caso
+				 * giocassimo in rete
 				 */
 				if (ownerGrd.ownerFrm.launcherApp.netenabled)
 					ownerGrd.ownerFrm.launcherApp.myColumn = id;
@@ -244,8 +230,7 @@ public class GraphicColumn extends JPanel {
 				ownerGrd.ownerFrm.launcherApp.gameGrid.changeTurn();
 
 				/*
-				 * se tocca al computer, questo gioca automaticamente la sua
-				 * mossa
+				 * se tocca al computer, questo gioca automaticamente la sua mossa
 				 */
 
 				if (ownerGrd.ownerFrm.launcherApp.gameGrid.currentPlayer > 0
@@ -269,8 +254,8 @@ public class GraphicColumn extends JPanel {
 
 	/*
 	 * cancella l'ultima mossa fatta; essa � comunque recuperabile con un Redo,
-	 * poich� dalla lista delle mosse essa non viene cancellata fin quando non
-	 * viene sovrascritta
+	 * poich� dalla lista delle mosse essa non viene cancellata fin quando non viene
+	 * sovrascritta
 	 */
 	void removeLast() {
 		int r = ownerGrd.ownerFrm.launcherApp.gameGrid.numberRow(id);
@@ -282,8 +267,7 @@ public class GraphicColumn extends JPanel {
 		/* eliminazione del gettone virtuale, si sostituisce con un vuoto */
 		row[r].removeAll();
 		imageLabel[r].removeAll();
-		imageLabel[r].setIcon(new ImageIcon(GraphicColumn.class
-				.getResource("empty.gif")));
+		imageLabel[r].setIcon(new ImageIcon(getClass().getResource("/icons/empty.gif")));
 		row[r].add(imageLabel[r]);
 		this.updateUI();
 	}
@@ -293,16 +277,15 @@ public class GraphicColumn extends JPanel {
 		for (int i = 0; i < rows; i++) {
 			row[i].removeAll();
 			imageLabel[i].removeAll();
-			imageLabel[i].setIcon(new ImageIcon(GraphicColumn.class
-					.getResource("empty.gif")));
+			imageLabel[i].setIcon(new ImageIcon(getClass().getResource("/icons/empty.gif")));
 			row[i].add(imageLabel[i]);
 		}
 	}
 
 	/*
-	 * carica il gettone senza l'evento click sulla colonna; questa funzione �
-	 * utile per caricare i gettoni delle mosse del computer, dei suggerimenti,
-	 * delle partite salvate non concluse; � analoga alla clickOnColumn: per il
+	 * carica il gettone senza l'evento click sulla colonna; questa funzione � utile
+	 * per caricare i gettoni delle mosse del computer, dei suggerimenti, delle
+	 * partite salvate non concluse; � analoga alla clickOnColumn: per il
 	 * significato delle righe affini, vedere sopra.
 	 */
 	void loadPawn() {
@@ -312,11 +295,9 @@ public class GraphicColumn extends JPanel {
 			// row[r].removeAll();
 			// imageLabel[r].removeAll();
 			if (ownerGrd.ownerFrm.launcherApp.gameGrid.currentPlayer > 0)
-				imageLabel[r].setIcon(new ImageIcon(GraphicColumn.class
-						.getResource("yellow.gif")));
+				imageLabel[r].setIcon(new ImageIcon(getClass().getResource("/icons/yellow.gif")));
 			else
-				imageLabel[r].setIcon(new ImageIcon(GraphicColumn.class
-						.getResource("red.gif")));
+				imageLabel[r].setIcon(new ImageIcon(getClass().getResource("/icons/red.gif")));
 			// row[r].add(imageLabel[r], null);
 			// row[r].updateUI();
 			row[r].paint(row[r].getGraphics());
@@ -335,24 +316,19 @@ public class GraphicColumn extends JPanel {
 				/* se vince il giocatore 1 */
 				if (winner > 0) {
 					if (ownerGrd.ownerFrm.launcherApp.one.isHuman())
-						message = "Hai vinto, "
-								+ ownerGrd.ownerFrm.launcherApp.one.getName()
-								+ "!";
+						message = "Hai vinto, " + ownerGrd.ownerFrm.launcherApp.one.getName() + "!";
 					else
 						message = "Hai perso...";
 				}
 				/* se vince il giocatore 2 */
 				else {
 					if (ownerGrd.ownerFrm.launcherApp.two.isHuman())
-						message = "Hai vinto, "
-								+ ownerGrd.ownerFrm.launcherApp.two.getName()
-								+ "!";
+						message = "Hai vinto, " + ownerGrd.ownerFrm.launcherApp.two.getName() + "!";
 					else
 						message = "Hai perso...";
 				}
 				/*
-				 * quando invece il gettone viene caricato dalla rete (sempre
-				 * persa)
+				 * quando invece il gettone viene caricato dalla rete (sempre persa)
 				 */
 				if (ownerGrd.ownerFrm.launcherApp.netenabled)
 					message = "Hai perso...";

@@ -13,10 +13,8 @@ Computer player uses alpha-beta pruning algorithm to search best action to play.
 
 ## Build and run application
 
-To run application
-
 ```
-mvn exec:java
+mvn clean compile exec:java
 ```
 
 ## License
