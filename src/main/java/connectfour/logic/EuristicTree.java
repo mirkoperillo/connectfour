@@ -1,4 +1,7 @@
-package connectfour;
+package connectfour.logic;
+
+import connectfour.gui.Gui;
+import connectfour.model.Grid;
 
 /*
 
@@ -27,33 +30,33 @@ public class EuristicTree {
 
 	private EuristicNode start;
 	private Grid configuration;
+	private Gui launcherApp;
 	public EuristicNode chosen;
 
 	/* costruttore di classe inizializza le variabile della classe. */
-	public EuristicTree() {
+	public EuristicTree(Gui launcherApp) {
 		start = null;
 		configuration = null;
 		chosen = new EuristicNode();
+		this.launcherApp = launcherApp;
 	}
 
 	/*
-	 * a questa build si puo passare come terzo parametro il livello di
-	 * profondita al quale si vuole arrivare a costruire..livello che rispecchia
-	 * il livello di difficolt� del gioco, player � il giocatore a cui tocca la
-	 * prox mossa
+	 * a questa build si puo passare come terzo parametro il livello di profondita
+	 * al quale si vuole arrivare a costruire..livello che rispecchia il livello di
+	 * difficolt� del gioco, player � il giocatore a cui tocca la prox mossa
 	 */
 
 	public void build(Grid conf, int player, int lev) {
 		start = new EuristicNode();
-		configuration = new Grid();
+		configuration = new Grid(launcherApp);
 		configuration.setGrid(conf);
 		EuristicNode temp = new EuristicNode();
 		temp = start;
 		int level = 0;
 		while (temp != null) {
 			boolean sonCreated = false;
-			if (temp.getSon() == null && level < lev
-					&& !configuration.isWon(temp.getColumn())) {
+			if (temp.getSon() == null && level < lev && !configuration.isWon(temp.getColumn())) {
 				int indexColumn = 0;
 				do {
 					int control = configuration.insertMove(indexColumn, player);
@@ -96,8 +99,8 @@ public class EuristicTree {
 
 	/*
 	 * la procedura richiama al suo interno le procedure di pruning e min-max
-	 * sull'albero di scelta e ritorna la mossa migliore da giocare per il
-	 * giocatore player.
+	 * sull'albero di scelta e ritorna la mossa migliore da giocare per il giocatore
+	 * player.
 	 */
 	public int play(int player) {
 		choose(this.start, -9999, 9999, -player, 0);
@@ -106,30 +109,27 @@ public class EuristicTree {
 
 	/*
 	 * procedura min-max: analizza l'albero di scelta settando il nodo choosen
-	 * secondo il valore della miglior vantaggio di max trovato. Maggiori
-	 * dettagli nella relazione. public int choose(EuristicNode tmp, int player,
-	 * int level) { int retv; if(tmp!=this.start)
-	 * configuration.insertMove(tmp.getColumn(), player); if(tmp.getSon()==null)
-	 * { if((level%2)>0) retv = configuration.h(player); else retv =
-	 * configuration.h(-player); if(configuration.isWon(tmp.getColumn()))
-	 * if((level%2)>0) retv = 1000; else retv = -1000; } else { int comparev;
-	 * EuristicNode tmp_son = new EuristicNode(); tmp_son = tmp.getSon();
-	 * if((level%2)>0) retv = 9999; else retv = -9999; while(tmp_son!=null) {
-	 * comparev = choose(tmp_son, -player, level+1); if((level%2)>0) {
-	 * if(comparev < retv) { retv = comparev; } } else { if(comparev > retv) {
-	 * retv = comparev; if(tmp==this.start) chosen = tmp_son; } } tmp_son =
-	 * tmp_son.getNext(); } } if(tmp!=this.start)
+	 * secondo il valore della miglior vantaggio di max trovato. Maggiori dettagli
+	 * nella relazione. public int choose(EuristicNode tmp, int player, int level) {
+	 * int retv; if(tmp!=this.start) configuration.insertMove(tmp.getColumn(),
+	 * player); if(tmp.getSon()==null) { if((level%2)>0) retv =
+	 * configuration.h(player); else retv = configuration.h(-player);
+	 * if(configuration.isWon(tmp.getColumn())) if((level%2)>0) retv = 1000; else
+	 * retv = -1000; } else { int comparev; EuristicNode tmp_son = new
+	 * EuristicNode(); tmp_son = tmp.getSon(); if((level%2)>0) retv = 9999; else
+	 * retv = -9999; while(tmp_son!=null) { comparev = choose(tmp_son, -player,
+	 * level+1); if((level%2)>0) { if(comparev < retv) { retv = comparev; } } else {
+	 * if(comparev > retv) { retv = comparev; if(tmp==this.start) chosen = tmp_son;
+	 * } } tmp_son = tmp_son.getNext(); } } if(tmp!=this.start)
 	 * configuration.removeMove(tmp.getColumn()); return retv; }
 	 * 
 	 * 
-	 * /*funzione pruning: la procedura visita l'albero di scelta e taglia i
-	 * nodi non significativi nella successiva analisi effettuata dall'algoritmo
-	 * min-max. Maggiori dettagli implementativi sono descritti nella relazione
-	 * allegata.
+	 * /*funzione pruning: la procedura visita l'albero di scelta e taglia i nodi
+	 * non significativi nella successiva analisi effettuata dall'algoritmo min-max.
+	 * Maggiori dettagli implementativi sono descritti nella relazione allegata.
 	 */
 
-	public int choose(EuristicNode tmp, int alpha, int beta, int player,
-			int level) {
+	public int choose(EuristicNode tmp, int alpha, int beta, int player, int level) {
 		int value;
 		if (tmp != start)
 			configuration.insertMove(tmp.getColumn(), player);

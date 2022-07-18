@@ -1,4 +1,6 @@
-package connectfour;
+package connectfour.model;
+
+import connectfour.gui.Gui;
 
 /*
 
@@ -20,13 +22,14 @@ package connectfour;
 
 public class Game extends Thread {
 
-	/* metodi */
-	/* costruttore */
-	public Game() {
+	private Gui gui;
+
+	public Game(Gui gui) {
+		this.gui = gui;
 	}
 
 	/* run del thread */
 	public void run() {
-		CFApp.enable_network();
+		gui.enable_network();
 	}
 }

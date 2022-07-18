@@ -1,4 +1,4 @@
-package connectfour;
+package connectfour.gui;
 
 /*
 
@@ -44,6 +44,9 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 
+import connectfour.logic.EuristicTree;
+import connectfour.model.Game;
+
 public class MainFrame extends JFrame {
 
 	/* __________________________________________________________________________ */
@@ -60,11 +63,11 @@ public class MainFrame extends JFrame {
 	public boolean removing = false;
 
 	/* l'applicazione che ha aperto il frame */
-	CFApp launcherApp;
+	Gui launcherApp;
 
 	/* dichiarazione dei pannelli che costituiscono la finestra principale */
 	JPanel contentPane;
-	GraphicGrid graphicGrid;
+	public GraphicGrid graphicGrid;
 	BorderLayout borderLayout;
 
 	/* dichiarazione della barra di menu e dei relativi sottomenu */
@@ -102,7 +105,7 @@ public class MainFrame extends JFrame {
 	/* ________________________________metodi____________________________________ */
 
 	/* costruttore */
-	public MainFrame(CFApp launcher) {
+	public MainFrame(Gui launcher) {
 		eventAvoider = new ThreadMouse(this);
 
 		enableEvents(AWTEvent.WINDOW_EVENT_MASK);
@@ -544,7 +547,7 @@ public class MainFrame extends JFrame {
 		/* se abilitiamo la modalita' rete per la prima volta */
 		if (launcherApp.network && !launcherApp.netenabled) {
 			/* apre il thread */
-			Game g = new Game();
+			Game g = new Game(launcherApp);
 			g.start();
 		} else {
 			/* se abbiamo appena finito di giocare in rete... */
@@ -571,7 +574,7 @@ public class MainFrame extends JFrame {
 						launcherApp.ss.close();
 					} catch (Exception exc) {
 					}
-					Game g = new Game();
+					Game g = new Game(launcherApp);
 					g.start();
 				}
 			}
@@ -696,7 +699,7 @@ public class MainFrame extends JFrame {
 		 * scegliere la mossa all'intelligenza artificiale
 		 */
 		if (!gameOver) {
-			EuristicTree tmpTree = new EuristicTree();
+			EuristicTree tmpTree = new EuristicTree(launcherApp);
 			tmpTree.build(launcherApp.gameGrid, launcherApp.gameGrid.currentPlayer, launcherApp.level);
 			int toPlay = tmpTree.play(launcherApp.gameGrid.currentPlayer);
 			graphicGrid.loadGrid(toPlay);

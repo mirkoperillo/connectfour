@@ -1,4 +1,4 @@
-package connectfour;
+package connectfour.gui;
 
 /*
 
@@ -33,7 +33,7 @@ public class GraphicColumn extends JPanel {
 	int id;
 
 	// flag
-	boolean flag;
+	public boolean flag;
 
 	/* griglia di appartenenza */
 	GraphicGrid ownerGrd;

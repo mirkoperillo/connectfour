@@ -1,4 +1,4 @@
-package connectfour;
+package connectfour.gui;
 
 /*
 

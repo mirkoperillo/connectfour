@@ -1,4 +1,4 @@
-package connectfour;
+package connectfour.gui;
 
 /*
 
@@ -35,7 +35,7 @@ public class GraphicGrid extends JPanel {
 	/* frame a cui il pannello appartiene */
 	MainFrame ownerFrm;
 
-	GraphicColumn column[] = new GraphicColumn[7];
+	public GraphicColumn column[] = new GraphicColumn[7];
 
 	/* variabili per il controllo del tipo di quattro */
 	public String mode;
@@ -64,8 +64,7 @@ public class GraphicGrid extends JPanel {
 		this.setLayout(gridLayout);
 
 		/*
-		 * creazione delle colonne, e creazione autogestita per ciascuna delle
-		 * righe
+		 * creazione delle colonne, e creazione autogestita per ciascuna delle righe
 		 */
 		Dimension gd = getSize();
 		for (int i = 0; i < columns; i++) {
@@ -100,14 +99,14 @@ public class GraphicGrid extends JPanel {
 
 	/* procedura di animazione del quattro vincente */
 	void markFour(int r, String gifName) {
+		gifName = "/icons/" + gifName;
 		int counter = 0;
 		/* orizzontale */
 		if (mode.startsWith("hr")) {
 			for (int i = startC; i < (startC + 4); i++) {
 				column[i].row[r].removeAll();
 				column[i].imageLabel[r].removeAll();
-				column[i].imageLabel[r].setIcon(new ImageIcon(GraphicGrid.class
-						.getResource(gifName)));
+				column[i].imageLabel[r].setIcon(new ImageIcon(getClass().getResource(gifName)));
 				column[i].row[r].add(column[i].imageLabel[r], null);
 			}
 		}
@@ -116,30 +115,25 @@ public class GraphicGrid extends JPanel {
 			for (int i = r; i < (r + 4); i++) {
 				column[startC].row[i].removeAll();
 				column[startC].imageLabel[i].removeAll();
-				column[startC].imageLabel[i].setIcon(new ImageIcon(
-						GraphicGrid.class.getResource(gifName)));
+				column[startC].imageLabel[i].setIcon(new ImageIcon(getClass().getResource(gifName)));
 				column[startC].row[i].add(column[startC].imageLabel[i], null);
 			}
 		}
 		/* diagonale sinistro */
 		if (mode.startsWith("dl")) {
-			for (int i = startR, j = startC; i < (startR + 4)
-					&& j > (startC - 4); i++, j--) {
+			for (int i = startR, j = startC; i < (startR + 4) && j > (startC - 4); i++, j--) {
 				column[j].row[i].removeAll();
 				column[j].imageLabel[i].removeAll();
-				column[j].imageLabel[i].setIcon(new ImageIcon(GraphicGrid.class
-						.getResource(gifName)));
+				column[j].imageLabel[i].setIcon(new ImageIcon(getClass().getResource(gifName)));
 				column[j].row[i].add(column[j].imageLabel[i], null);
 			}
 		}
 		/* diagonale destro */
 		if (mode.startsWith("dr")) {
-			for (int i = startR, j = startC; i < (startR + 4)
-					&& j < (startC + 4); i++, j++) {
+			for (int i = startR, j = startC; i < (startR + 4) && j < (startC + 4); i++, j++) {
 				column[j].row[i].removeAll();
 				column[j].imageLabel[i].removeAll();
-				column[j].imageLabel[i].setIcon(new ImageIcon(GraphicGrid.class
-						.getResource(gifName)));
+				column[j].imageLabel[i].setIcon(new ImageIcon(getClass().getResource(gifName)));
 				column[j].row[i].add(column[j].imageLabel[i], null);
 			}
 		}

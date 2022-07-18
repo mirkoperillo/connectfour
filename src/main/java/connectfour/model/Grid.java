@@ -1,4 +1,6 @@
-package connectfour;
+package connectfour.model;
+
+import connectfour.gui.Gui;
 
 /*
 
@@ -27,7 +29,7 @@ package connectfour;
 public class Grid {
 
 	// riferimento all' oggetto CFApp che ha costruito la griglia
-	CFApp launcherApp;
+	Gui launcherApp;
 
 	/*
 	 * giocatore giallo. L'inizializzazione a 1 significa che per regola il
@@ -41,7 +43,7 @@ public class Grid {
 	// dei propri slots.
 	private int grid[][];
 
-	public Grid(CFApp launcher) {
+	public Grid(Gui launcher) {
 		launcherApp = launcher;
 		this.grid = new int[6][7];
 		init();

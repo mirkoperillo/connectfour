@@ -1,4 +1,4 @@
-package connectfour;
+package connectfour.gui;
 
 /*
 
@@ -89,14 +89,11 @@ public class MainFrame_GameOverBox extends JDialog implements ActionListener {
 		icon.setBorder(BorderFactory.createCompoundBorder());
 		icon.setRequestFocusEnabled(false);
 		if (message.getText().startsWith("Hai vinto"))
-			icon.setIcon(new ImageIcon(MainFrame_GameOverBox.class
-					.getResource("angry.gif")));
+			icon.setIcon(new ImageIcon(getClass().getResource("/icons/angry.gif")));
 		else if (message.getText().startsWith("Hai perso"))
-			icon.setIcon(new ImageIcon(MainFrame_GameOverBox.class
-					.getResource("hot.gif")));
+			icon.setIcon(new ImageIcon(getClass().getResource("/icons/hot.gif")));
 		else
-			icon.setIcon(new ImageIcon(MainFrame_GameOverBox.class
-					.getResource("surprised.gif")));
+			icon.setIcon(new ImageIcon(getClass().getResource("/icons/surprised.gif")));
 		panel3.add(icon);
 
 		/* assemblaggio */

@@ -1,4 +1,4 @@
-package connectfour;
+package connectfour.gui;
 
 /*
 
@@ -18,36 +18,31 @@ package connectfour;
  along with connectfour.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-public class Player {
+import java.awt.event.MouseEvent;
 
-	/* variabili */
-	/* nome del giocatore */
-	private String name;
-	/* giocatore umano o computer */
-	private boolean human;
+public class Mouse implements java.awt.event.MouseListener {
 
-	/* metodi */
-	/* costruttore */
-	public Player() {
+	public GraphicColumn ownerColumn;
+
+	public Mouse(GraphicColumn column) {
+		ownerColumn = column;
 	}
 
-	/* restituisce il nome del giocatore */
-	public String getName() {
-		return name;
+	public void mouseClicked(MouseEvent e) {
 	}
 
-	/* dichiara se un giocatore � umano o computer */
-	public boolean isHuman() {
-		return human;
+	public void mousePressed(MouseEvent e) {
 	}
 
-	/* imposta il nome del giocatore */
-	public void setName(String name) {
-		this.name = new String(name);
+	public void mouseReleased(MouseEvent e) {
+		// if(e.getClickCount()==1)
+		if (ownerColumn.flag)
+			ownerColumn.clickOnColumn(e);
 	}
 
-	/* imposta se un giocatore � umano o computer */
-	public void setHuman(boolean human) {
-		this.human = human;
+	public void mouseEntered(MouseEvent e) {
+	}
+
+	public void mouseExited(MouseEvent e) {
 	}
 }
