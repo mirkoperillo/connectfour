@@ -5,6 +5,7 @@ import connectfour.gui.Gui;
 /*
 
  Copyright (C) 2003 Alessandro Zolet, Mirko Perillo
+ Copyright (C) 2022 Mirko Perillo
 
  This file is part of connectfour.
 

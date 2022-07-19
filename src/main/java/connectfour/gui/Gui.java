@@ -30,6 +30,7 @@ import javax.swing.UIManager;
 
 import connectfour.logic.NetworkGame;
 import connectfour.model.Grid;
+import connectfour.model.Level;
 import connectfour.model.Player;
 
 public class Gui {
@@ -48,13 +49,13 @@ public class Gui {
 	public int marker;
 
 	/* giocatore che inzia la partita */
-	static Player one;
+	Player one;
 
 	/* secondo giocatore */
-	static Player two;
+	Player two;
 
 	/* livello di gioco del computer */
-	static int level;
+	Level level;
 
 	boolean beginNewMatch = true;
 
@@ -202,9 +203,9 @@ public class Gui {
 					cfr = "level";
 					if (tmp.startsWith(cfr)) {
 						if (tmp.endsWith("= 4;"))
-							level = 4;
+							level = Level.NORMAL;
 						else
-							level = 6;
+							level = Level.HARD;
 					}
 
 				}

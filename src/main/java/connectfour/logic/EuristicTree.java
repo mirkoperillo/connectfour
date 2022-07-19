@@ -2,6 +2,7 @@ package connectfour.logic;
 
 import connectfour.gui.Gui;
 import connectfour.model.Grid;
+import connectfour.model.Level;
 
 /*
 
@@ -47,7 +48,7 @@ public class EuristicTree {
 	 * difficolt� del gioco, player � il giocatore a cui tocca la prox mossa
 	 */
 
-	public void build(Grid conf, int player, int lev) {
+	public void build(Grid conf, int player, Level lev) {
 		start = new EuristicNode();
 		configuration = new Grid(launcherApp);
 		configuration.setGrid(conf);
@@ -56,7 +57,7 @@ public class EuristicTree {
 		int level = 0;
 		while (temp != null) {
 			boolean sonCreated = false;
-			if (temp.getSon() == null && level < lev && !configuration.isWon(temp.getColumn())) {
+			if (temp.getSon() == null && level < lev.getDifficulty() && !configuration.isWon(temp.getColumn())) {
 				int indexColumn = 0;
 				do {
 					int control = configuration.insertMove(indexColumn, player);

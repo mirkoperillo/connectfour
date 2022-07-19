@@ -46,6 +46,7 @@ import javax.swing.JToolBar;
 
 import connectfour.logic.EuristicTree;
 import connectfour.model.Game;
+import connectfour.model.Level;
 
 public class MainFrame extends JFrame {
 
@@ -244,7 +245,7 @@ public class MainFrame extends JFrame {
 				menuSettingsLevelHard_actionPerformed(e);
 			}
 		});
-		if (launcherApp.level > 4) {
+		if (launcherApp.level == Level.HARD) {
 			menuSettingsLevelNormal.setState(false);
 			menuSettingsLevelHard.setState(true);
 		} else {
@@ -485,7 +486,7 @@ public class MainFrame extends JFrame {
 		}
 
 		/* livello corrente di gioco */
-		if (launcherApp.level > 4) {
+		if (launcherApp.level == Level.HARD) {
 			menuSettingsLevelNormal.setState(false);
 			menuSettingsLevelHard.setState(true);
 		} else {
@@ -536,7 +537,7 @@ public class MainFrame extends JFrame {
 			moveForward.setEnabled(false);
 		}
 
-		if (launcherApp.level > 4) {
+		if (launcherApp.level == Level.HARD) {
 			menuSettingsLevelNormal.setState(false);
 			menuSettingsLevelHard.setState(true);
 		} else {
@@ -774,14 +775,14 @@ public class MainFrame extends JFrame {
 	public void menuSettingsLevelNormal_actionPerformed(ActionEvent e) {
 		menuSettingsLevelNormal.setState(true);
 		menuSettingsLevelHard.setState(false);
-		launcherApp.level = 4;
+		launcherApp.level = Level.NORMAL;
 	}
 
 	/* attivazione Settings>Level>Normal */
 	public void menuSettingsLevelHard_actionPerformed(ActionEvent e) {
 		menuSettingsLevelNormal.setState(false);
 		menuSettingsLevelHard.setState(true);
-		launcherApp.level = 6;
+		launcherApp.level = Level.HARD;
 	}
 
 	/* attivazione Settings>Playername */
