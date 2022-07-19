@@ -29,9 +29,9 @@ import java.io.InputStreamReader;
 import javax.swing.UIManager;
 
 import connectfour.logic.NetworkGame;
+import connectfour.model.Game;
 import connectfour.model.Grid;
 import connectfour.model.Level;
-import connectfour.model.Player;
 
 public class Gui {
 
@@ -48,14 +48,7 @@ public class Gui {
 	/* indice che definisce l'ultima mossa valida */
 	public int marker;
 
-	/* giocatore che inzia la partita */
-	Player one;
-
-	/* secondo giocatore */
-	Player two;
-
-	/* livello di gioco del computer */
-	Level level;
+	public Game game;
 
 	boolean beginNewMatch = true;
 
@@ -63,7 +56,8 @@ public class Gui {
 
 	public NetworkGame networkGame;
 
-	public Gui() {
+	public Gui(Game game) {
+		this.game = game;
 
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -72,8 +66,6 @@ public class Gui {
 		}
 
 		networkGame = new NetworkGame(this);
-		one = new Player();
-		two = new Player();
 
 		/* path di installazione del gioco */
 		String gamePath = new File("").getAbsolutePath();
@@ -129,11 +121,6 @@ public class Gui {
 		frame.setVisible(true);
 	}
 
-	/* __________________________________________________________________________ */
-	/*
-	 * _______________assegnazione variabili loadCfg_____________________________
-	 */
-
 	/*
 	 * caricamento delle variabili secondo le impostazioni predefinite del file di
 	 * configurazione cfg presente nella cartella di installazione del gioco
@@ -153,20 +140,20 @@ public class Gui {
 					cfr = "singlePlayer";
 					if (tmp.startsWith(cfr)) {
 						if (tmp.endsWith("= 1;")) {
-							one.setHuman(true);
-							two.setHuman(false);
+							game.getPlayer1().setHuman(true);
+							game.getPlayer2().setHuman(false);
 						}
 						if (tmp.endsWith("= 2;")) {
-							one.setHuman(false);
-							two.setHuman(true);
+							game.getPlayer1().setHuman(false);
+							game.getPlayer2().setHuman(true);
 						}
 					}
 
 					/* caso: multigiocatore */
 					cfr = "multiPlayer";
 					if (tmp.startsWith(cfr) && tmp.endsWith("= 1;")) {
-						one.setHuman(true);
-						two.setHuman(true);
+						game.getPlayer1().setHuman(true);
+						game.getPlayer2().setHuman(true);
 					}
 
 					/*
@@ -179,14 +166,14 @@ public class Gui {
 					cfr = "name1";
 					if (tmp.startsWith(cfr)) {
 						tmp = tmp.substring(tmp.indexOf("'") + 1, tmp.lastIndexOf("'"));
-						one.setName(tmp);
+						game.getPlayer1().setName(tmp);
 					}
 
 					/* imposta il nome del giocatore 2 */
 					cfr = "name2";
 					if (tmp.startsWith(cfr)) {
 						tmp = tmp.substring(tmp.indexOf("'") + 1, tmp.lastIndexOf("'"));
-						two.setName(tmp);
+						game.getPlayer2().setName(tmp);
 					}
 
 					/* configura IP */
@@ -203,9 +190,9 @@ public class Gui {
 					cfr = "level";
 					if (tmp.startsWith(cfr)) {
 						if (tmp.endsWith("= 4;"))
-							level = Level.NORMAL;
+							game.setLevel(Level.NORMAL);
 						else
-							level = Level.HARD;
+							game.setLevel(Level.HARD);
 					}
 
 				}

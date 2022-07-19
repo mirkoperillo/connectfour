@@ -182,10 +182,10 @@ public class GraphicColumn extends JPanel {
 
 					/* se la partita � vinta dal giocatore 1... */
 					if (winner > 0)
-						message = "Hai vinto " + ownerGrd.ownerFrm.launcherApp.one.getName() + "!";
+						message = "Hai vinto " + ownerGrd.ownerFrm.launcherApp.game.getPlayer1().getName() + "!";
 					/* se la partita � vinta dal giocatore 2... */
 					else
-						message = "Hai vinto " + ownerGrd.ownerFrm.launcherApp.two.getName() + "!";
+						message = "Hai vinto " + ownerGrd.ownerFrm.launcherApp.game.getPlayer2().getName() + "!";
 
 					/* invio del messaggio di fine partita */
 					ownerGrd.ownerFrm.gameOver(message);
@@ -234,10 +234,10 @@ public class GraphicColumn extends JPanel {
 				 */
 
 				if (ownerGrd.ownerFrm.launcherApp.gameGrid.currentPlayer > 0
-						&& !ownerGrd.ownerFrm.launcherApp.one.isHuman())
+						&& !ownerGrd.ownerFrm.launcherApp.game.getPlayer1().isHuman())
 					ownerGrd.ownerFrm.menuMovePlay_actionPerformed(null);
 				else if (ownerGrd.ownerFrm.launcherApp.gameGrid.currentPlayer < 0
-						&& !ownerGrd.ownerFrm.launcherApp.two.isHuman())
+						&& !ownerGrd.ownerFrm.launcherApp.game.getPlayer2().isHuman())
 					ownerGrd.ownerFrm.menuMovePlay_actionPerformed(null);
 
 				synchronized (this.ownerGrd.ownerFrm) {
@@ -315,15 +315,15 @@ public class GraphicColumn extends JPanel {
 				String message = new String();
 				/* se vince il giocatore 1 */
 				if (winner > 0) {
-					if (ownerGrd.ownerFrm.launcherApp.one.isHuman())
-						message = "Hai vinto, " + ownerGrd.ownerFrm.launcherApp.one.getName() + "!";
+					if (ownerGrd.ownerFrm.launcherApp.game.getPlayer1().isHuman())
+						message = "Hai vinto, " + ownerGrd.ownerFrm.launcherApp.game.getPlayer1().getName() + "!";
 					else
 						message = "Hai perso...";
 				}
 				/* se vince il giocatore 2 */
 				else {
-					if (ownerGrd.ownerFrm.launcherApp.two.isHuman())
-						message = "Hai vinto, " + ownerGrd.ownerFrm.launcherApp.two.getName() + "!";
+					if (ownerGrd.ownerFrm.launcherApp.game.getPlayer2().isHuman())
+						message = "Hai vinto, " + ownerGrd.ownerFrm.launcherApp.game.getPlayer2().getName() + "!";
 					else
 						message = "Hai perso...";
 				}

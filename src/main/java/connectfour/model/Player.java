@@ -20,33 +20,24 @@ package connectfour.model;
 
 public class Player {
 
-	/* variabili */
-	/* nome del giocatore */
 	private String name;
-	/* giocatore umano o computer */
 	private boolean human;
 
-	/* metodi */
-	/* costruttore */
 	public Player() {
 	}
 
-	/* restituisce il nome del giocatore */
 	public String getName() {
 		return name;
 	}
 
-	/* dichiara se un giocatore � umano o computer */
 	public boolean isHuman() {
 		return human;
 	}
 
-	/* imposta il nome del giocatore */
 	public void setName(String name) {
 		this.name = new String(name);
 	}
 
-	/* imposta se un giocatore � umano o computer */
 	public void setHuman(boolean human) {
 		this.human = human;
 	}

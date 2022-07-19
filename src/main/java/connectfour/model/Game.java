@@ -1,7 +1,5 @@
 package connectfour.model;
 
-import connectfour.gui.Gui;
-
 /*
 
  Copyright (C) 2003 Alessandro Zolet, Mirko Perillo
@@ -21,16 +19,50 @@ import connectfour.gui.Gui;
  along with connectfour.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-public class Game extends Thread {
+public class Game {
 
-	private Gui gui;
+	private Player player1;
+	private Player player2;
+	private Level level;
 
-	public Game(Gui gui) {
-		this.gui = gui;
+	private boolean singlePlayerGame;
+
+	public Game() {
+		player1 = new Player();
+		player2 = new Player();
+		level = Level.NORMAL;
+	}
+
+	public void newGame() {
+		// gui.networkGame.enable_network();
+	}
+
+	public Player getPlayer1() {
+		return player1;
+	}
+
+	public Player getPlayer2() {
+		return player2;
+	}
+
+	public Level getLevel() {
+		return level;
+	}
+
+	public void setLevel(Level level) {
+		this.level = level;
+	}
+
+	public boolean isSinglePlayer() {
+		return singlePlayerGame;
+	}
+
+	public boolean isMultiPlayer() {
+		return !singlePlayerGame;
 	}
 
 	/* run del thread */
-	public void run() {
-		gui.networkGame.enable_network();
-	}
+	/*
+	 * public void run() { gui.networkGame.enable_network(); }
+	 */
 }

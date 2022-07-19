@@ -90,8 +90,9 @@ public class MainFrame_NewGameBox extends JDialog {
 		singlePlayer = new JRadioButton();
 		singlePlayer.setFont(new java.awt.Font("Dialog", 0, 11));
 		singlePlayer.setText("Single Player, as:");
-		if ((ownerFrm.launcherApp.one.isHuman() && !ownerFrm.launcherApp.two.isHuman())
-				|| (!ownerFrm.launcherApp.one.isHuman() && ownerFrm.launcherApp.two.isHuman())) {
+		if ((ownerFrm.launcherApp.game.getPlayer1().isHuman() && !ownerFrm.launcherApp.game.getPlayer2().isHuman())
+				|| (!ownerFrm.launcherApp.game.getPlayer1().isHuman()
+						&& ownerFrm.launcherApp.game.getPlayer2().isHuman())) {
 			singlePlayer.setSelected(true);
 		}
 		singlePlayer.addActionListener(new ActionListener() {
@@ -106,7 +107,7 @@ public class MainFrame_NewGameBox extends JDialog {
 		playerOne.setText("Player 1");
 		if (!singlePlayer.isSelected())
 			playerOne.setEnabled(false);
-		if (ownerFrm.launcherApp.one.isHuman())
+		if (ownerFrm.launcherApp.game.getPlayer1().isHuman())
 			playerOne.setSelected(true);
 		playerOne.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -120,7 +121,7 @@ public class MainFrame_NewGameBox extends JDialog {
 		playerTwo.setText("Player 2");
 		if (!singlePlayer.isSelected())
 			playerTwo.setEnabled(false);
-		if (ownerFrm.launcherApp.two.isHuman() && !playerOne.isSelected())
+		if (ownerFrm.launcherApp.game.getPlayer2().isHuman() && !playerOne.isSelected())
 			playerTwo.setSelected(true);
 		playerTwo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -132,7 +133,7 @@ public class MainFrame_NewGameBox extends JDialog {
 		multiPlayer = new JRadioButton();
 		multiPlayer.setFont(new java.awt.Font("Dialog", 0, 11));
 		multiPlayer.setText("Multi Player");
-		if (ownerFrm.launcherApp.one.isHuman() && ownerFrm.launcherApp.two.isHuman()) {
+		if (ownerFrm.launcherApp.game.getPlayer1().isHuman() && ownerFrm.launcherApp.game.getPlayer2().isHuman()) {
 			multiPlayer.setSelected(true);
 		}
 		multiPlayer.addActionListener(new ActionListener() {
@@ -268,19 +269,19 @@ public class MainFrame_NewGameBox extends JDialog {
 		/* scelta partita singolo giocatore contro il computer */
 		if (singlePlayer.isSelected()) {
 			if (playerOne.isSelected()) {
-				ownerFrm.launcherApp.one.setHuman(true);
-				ownerFrm.launcherApp.two.setHuman(false);
+				ownerFrm.launcherApp.game.getPlayer1().setHuman(true);
+				ownerFrm.launcherApp.game.getPlayer2().setHuman(false);
 			} else {
-				ownerFrm.launcherApp.one.setHuman(false);
-				ownerFrm.launcherApp.two.setHuman(true);
+				ownerFrm.launcherApp.game.getPlayer1().setHuman(false);
+				ownerFrm.launcherApp.game.getPlayer2().setHuman(true);
 			}
 			ownerFrm.launcherApp.networkGame.network = false;
 		}
 
 		/* scelta partita multigiocatore... */
 		else {
-			ownerFrm.launcherApp.one.setHuman(true);
-			ownerFrm.launcherApp.two.setHuman(true);
+			ownerFrm.launcherApp.game.getPlayer1().setHuman(true);
+			ownerFrm.launcherApp.game.getPlayer2().setHuman(true);
 			/* ...su un pc */
 			if (!network.isSelected() || !network.isEnabled()) {
 				ownerFrm.launcherApp.networkGame.network = false;

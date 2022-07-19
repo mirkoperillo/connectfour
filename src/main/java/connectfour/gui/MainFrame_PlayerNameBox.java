@@ -74,10 +74,10 @@ public class MainFrame_PlayerNameBox extends JDialog {
 		name2.setText("Player 2: ");
 
 		player1name.setFont(new java.awt.Font("Dialog", 0, 11));
-		player1name.setText(ownerFrm.launcherApp.one.getName());
+		player1name.setText(ownerFrm.launcherApp.game.getPlayer1().getName());
 
 		player2name.setFont(new java.awt.Font("Dialog", 0, 11));
-		player2name.setText(ownerFrm.launcherApp.two.getName());
+		player2name.setText(ownerFrm.launcherApp.game.getPlayer2().getName());
 
 		okButton.setFont(new java.awt.Font("Dialog", 0, 11));
 		okButton.setText("OK");
@@ -110,8 +110,8 @@ public class MainFrame_PlayerNameBox extends JDialog {
 
 	/* metodi */
 	/*
-	 * pressione del pulsante OK, salva i nomi desiderati fino a 20 caratteri,
-	 * il resto viene eventualmente ignorato
+	 * pressione del pulsante OK, salva i nomi desiderati fino a 20 caratteri, il
+	 * resto viene eventualmente ignorato
 	 */
 	public void okButton_actionPerformed(ActionEvent e) {
 		if (player1name.getText() == null || player1name.getText().trim() == "")
@@ -120,8 +120,7 @@ public class MainFrame_PlayerNameBox extends JDialog {
 			/* lettura del campo di testo */
 			String name = new String(player1name.getText());
 			/*
-			 * se il nome � pi� lungo di 20 caratteri dal 21esimo vengono
-			 * ignorati
+			 * se il nome � pi� lungo di 20 caratteri dal 21esimo vengono ignorati
 			 */
 			if (name.length() > 20)
 				name = name.substring(0, 20);
@@ -129,13 +128,13 @@ public class MainFrame_PlayerNameBox extends JDialog {
 			else
 				name = name.substring(0, name.length());
 			/* nuovo nome impostato, analogo per il giocatore 2 */
-			ownerFrm.launcherApp.one.setName(name);
+			ownerFrm.launcherApp.game.getPlayer1().setName(name);
 			name = player2name.getText();
 			if (name.length() > 20)
 				name = name.substring(0, 20);
 			else
 				name = name.substring(0, name.length());
-			ownerFrm.launcherApp.two.setName(name);
+			ownerFrm.launcherApp.game.getPlayer2().setName(name);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
