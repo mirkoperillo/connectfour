@@ -1,5 +1,7 @@
 package connectfour.model;
 
+import java.util.Arrays;
+
 /*
 
  Copyright (C) 2003 Alessandro Zolet, Mirko Perillo
@@ -26,11 +28,30 @@ public class Game {
 	private Level level;
 
 	private boolean singlePlayerGame;
+	private int[] moves;
+	private int marker;
 
 	public Game() {
 		player1 = new Player();
+		player1.setName("");
 		player2 = new Player();
+		player2.setName("");
 		level = Level.NORMAL;
+		singlePlayerGame = true;
+		moves = new int[42];
+		marker = 0;
+	}
+
+	public Game(Configuration cfg) {
+		player1 = new Player();
+		player1.setName(cfg.player1Name());
+		player2 = new Player();
+		player2.setName(cfg.player2Name());
+		level = cfg.level();
+		singlePlayerGame = cfg.singlePlayerGame();
+
+		moves = new int[42];
+		marker = 0;
 	}
 
 	public void newGame() {
@@ -59,6 +80,55 @@ public class Game {
 
 	public boolean isMultiPlayer() {
 		return !singlePlayerGame;
+	}
+
+	public void loadSavedGame(SavedGame savedGame) {
+		moves = savedGame.moves();
+		marker = savedGame.marker();
+
+	}
+
+	public void nextMove(int column) {
+		moves[marker] = column;
+		marker++;
+		// FIXME needed ??
+		for (int i = marker; i <= 41; i++) {
+			if (moves[i] != -1)
+				moves[i] = -1;
+		}
+
+	}
+
+	public int removeLastMove() {
+		marker--;
+		return moves[marker];
+	}
+
+	public boolean noMoreMoves() {
+		return marker >= 42;
+	}
+
+	public int lastMove() {
+		int move = moves[marker];
+		marker++;
+		return move;
+	}
+
+	public void reset() {
+		Arrays.fill(moves, -1);
+		marker = 0;
+	}
+
+	public boolean isSinglePlayerGame() {
+		return singlePlayerGame;
+	}
+
+	public int[] getMoves() {
+		return moves;
+	}
+
+	public int getMarker() {
+		return marker;
 	}
 
 	/* run del thread */

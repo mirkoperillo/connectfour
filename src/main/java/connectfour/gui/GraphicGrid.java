@@ -83,8 +83,7 @@ public class GraphicGrid extends JPanel {
 	/* procedura di rimozione di un gettone */
 	void removeLast() {
 		/* nella lista delle mosse non viene eliminato */
-		ownerFrm.launcherApp.marker--;
-		int c = ownerFrm.launcherApp.moves[ownerFrm.launcherApp.marker];
+		int c = ownerFrm.launcherApp.game.removeLastMove();
 		column[c].removeLast();
 	}
 

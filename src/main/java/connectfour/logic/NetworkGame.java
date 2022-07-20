@@ -126,8 +126,7 @@ public class NetworkGame {
 					 */
 					column = receive(c_in);
 					gui.frame.graphicGrid.loadGrid(column);
-					gui.moves[gui.marker] = column;
-					gui.marker++;
+					gui.game.nextMove(column);
 					neturn = true;
 				}
 			}
@@ -188,8 +187,7 @@ public class NetworkGame {
 						 */
 						column = receive(s_in);
 						gui.frame.graphicGrid.loadGrid(column);
-						gui.moves[gui.marker] = column;
-						gui.marker++;
+						gui.game.nextMove(column);
 						neturn = true;
 					}
 				}

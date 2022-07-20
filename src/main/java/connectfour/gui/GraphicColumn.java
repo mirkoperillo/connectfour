@@ -122,12 +122,7 @@ public class GraphicColumn extends JPanel {
 				ownerGrd.ownerFrm.statusBar.setText(" ");
 
 				/* aggiornamento della lista delle mosse a inserzione avvenuta */
-				ownerGrd.ownerFrm.launcherApp.moves[ownerGrd.ownerFrm.launcherApp.marker] = id;
-				ownerGrd.ownerFrm.launcherApp.marker++;
-				for (int i = ownerGrd.ownerFrm.launcherApp.marker; i <= 41; i++) {
-					if (ownerGrd.ownerFrm.launcherApp.moves[i] != -1)
-						ownerGrd.ownerFrm.launcherApp.moves[i] = -1;
-				}
+				ownerGrd.ownerFrm.launcherApp.game.nextMove(id);
 
 				if (!ownerGrd.ownerFrm.launcherApp.networkGame.netenabled) {
 					/*
@@ -145,7 +140,7 @@ public class GraphicColumn extends JPanel {
 					 * la 42esima � l'ultima mossa possibile: non ha pi� senso accettare i
 					 * suggerimenti
 					 */
-					if (ownerGrd.ownerFrm.launcherApp.marker >= 42) {
+					if (ownerGrd.ownerFrm.launcherApp.game.noMoreMoves()) {
 						ownerGrd.ownerFrm.playHint.setEnabled(false);
 						ownerGrd.ownerFrm.menuMovePlay.setEnabled(false);
 					}

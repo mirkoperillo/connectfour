@@ -417,7 +417,7 @@ public class MainFrame extends JFrame {
 		statusBar.setText(msg);
 
 		/* caricamento di eventuale partita non terminata */
-		if (launcherApp.marker > 0 && !launcherApp.networkGame.netenabled) {
+		if (launcherApp.game.getMarker() > 0 && !launcherApp.networkGame.netenabled) {
 			loadGame();
 			/* se tocca al giocatore 1 che � computer, gioca */
 			if (launcherApp.gameGrid.currentPlayer > 0 && !launcherApp.game.getPlayer1().isHuman())
@@ -436,8 +436,8 @@ public class MainFrame extends JFrame {
 	 * inserendo i gettoni nella griglia tramite il metodo loadGrid
 	 */
 	void loadGame() {
-		for (int i = 0; i < launcherApp.marker; i++) {
-			graphicGrid.loadGrid(launcherApp.moves[i]);
+		for (int i = 0; i < launcherApp.game.getMarker(); i++) {
+			graphicGrid.loadGrid(launcherApp.game.getMoves()[i]);
 		}
 	}
 
@@ -464,9 +464,7 @@ public class MainFrame extends JFrame {
 			launcherApp.gameGrid.currentPlayer *= -1;
 
 		/* svuotato il vettore mosse */
-		for (int i = 0; i < 42; i++)
-			launcherApp.moves[i] = -1;
-		launcherApp.marker = 0;
+		launcherApp.game.reset();
 		graphicGrid.updateUI();
 
 		/* servizi disabilitati in modalita' rete */
@@ -516,9 +514,7 @@ public class MainFrame extends JFrame {
 		removing = false;
 
 		launcherApp.gameGrid.currentPlayer = 1;
-		for (int i = 0; i < 42; i++)
-			launcherApp.moves[i] = -1;
-		launcherApp.marker = 0;
+		launcherApp.game.reset();
 
 		graphicGrid.updateUI();
 		if (!launcherApp.networkGame.network) {
@@ -589,19 +585,19 @@ public class MainFrame extends JFrame {
 		if (saveCfg.exists())
 			saveCfg.delete();
 
-		if (!gameOver && launcherApp.moves[0] != -1) {
+		if (!gameOver && launcherApp.game.getMoves()[0] != -1) {
 			/*
 			 * salva la partita prima di uscire, in modo che essa sia recuperabile al
 			 * seguente avvio del programma
 			 */
 			saveCfg.createNewFile();
 			PrintStream writer = new PrintStream(new FileOutputStream(saveCfg));
-			for (int i = launcherApp.marker; i < 42; i++) {
-				launcherApp.moves[i] = -1;
+			for (int i = launcherApp.game.getMarker(); i < 42; i++) {
+				launcherApp.game.getMoves()[i] = -1;
 			}
 			for (int i = 0; i < 42; i++)
-				if (launcherApp.moves[i] != -1)
-					writer.print(launcherApp.moves[i]);
+				if (launcherApp.game.getMoves()[i] != -1)
+					writer.print(launcherApp.game.getMoves()[i]);
 			writer.print('*');
 			writer.close();
 		}
@@ -650,7 +646,7 @@ public class MainFrame extends JFrame {
 	/* attivazione di Move>Back */
 	public void menuMoveBack_actionPerformed(ActionEvent e) {
 		/* se la griglia non e' vuota possiamo togliere l'ultimo gettone */
-		if (launcherApp.marker > 0) {
+		if (launcherApp.game.getMarker() > 0) {
 			removing = true;
 			/* se prima la partita era finita puo' essere rigiocata */
 			gameOver = false;
@@ -660,7 +656,7 @@ public class MainFrame extends JFrame {
 			 */
 			if (launcherApp.gameGrid.currentPlayer > 0) {
 				if (!launcherApp.game.getPlayer2().isHuman() && launcherApp.game.getPlayer1().isHuman()) {
-					if (launcherApp.marker >= 2) {
+					if (launcherApp.game.getMarker() >= 2) {
 						graphicGrid.removeLast();
 						graphicGrid.removeLast();
 					}
@@ -670,7 +666,7 @@ public class MainFrame extends JFrame {
 			/* la stessa cosa per il giocatore 2 */
 			else {
 				if (launcherApp.game.getPlayer2().isHuman() && !launcherApp.game.getPlayer1().isHuman()) {
-					if (launcherApp.marker >= 2) {
+					if (launcherApp.game.getMarker() >= 2) {
 						graphicGrid.removeLast();
 						graphicGrid.removeLast();
 					}
@@ -679,7 +675,7 @@ public class MainFrame extends JFrame {
 			}
 		}
 		/* dalla griglia vuota non e' possibile tornare indietro */
-		if (launcherApp.marker <= 0) {
+		if (launcherApp.game.getMarker() <= 0) {
 			menuMoveBack.setEnabled(false);
 			moveBack.setEnabled(false);
 		} else {
@@ -703,8 +699,7 @@ public class MainFrame extends JFrame {
 			tmpTree.build(launcherApp.gameGrid, launcherApp.gameGrid.currentPlayer, launcherApp.game.getLevel());
 			int toPlay = tmpTree.play(launcherApp.gameGrid.currentPlayer);
 			graphicGrid.loadGrid(toPlay);
-			launcherApp.moves[launcherApp.marker] = toPlay;
-			launcherApp.marker++;
+			launcherApp.game.nextMove(toPlay);
 			if (launcherApp.gameGrid.currentPlayer > 0) {
 				if (!launcherApp.game.getPlayer1().isHuman() && launcherApp.game.getPlayer2().isHuman()) {
 					menuMovePlay_actionPerformed(null);
@@ -717,8 +712,8 @@ public class MainFrame extends JFrame {
 		}
 
 		/* se la partita non e' terminata la funzione e' abilitata */
-		if (launcherApp.marker < 42) {
-			if (launcherApp.moves[launcherApp.marker] == -1)
+		if (launcherApp.game.getMarker() < 42) {
+			if (launcherApp.game.getMoves()[launcherApp.game.getMarker()] == -1)
 				if (e == null) {
 					menuMoveForward.setEnabled(false);
 					moveForward.setEnabled(false);
@@ -738,9 +733,8 @@ public class MainFrame extends JFrame {
 		 * disabilita in rete sempre, a fine partita, o quando viene fatta
 		 * un'inserzione. Se il computer ha gia' giocato, si reinseriscono due gettoni.
 		 */
-		if (launcherApp.moves[launcherApp.marker] != -1) {
-			graphicGrid.loadGrid(launcherApp.moves[launcherApp.marker]);
-			launcherApp.marker++;
+		if (launcherApp.game.getMoves()[launcherApp.game.getMarker()] != -1) {
+			graphicGrid.loadGrid(launcherApp.game.lastMove());
 		}
 
 		if (launcherApp.gameGrid.currentPlayer > 0) {
@@ -753,8 +747,8 @@ public class MainFrame extends JFrame {
 			}
 		}
 
-		if (launcherApp.marker < 41) {
-			if (launcherApp.moves[launcherApp.marker] == -1) {
+		if (launcherApp.game.getMarker() < 41) {
+			if (launcherApp.game.getMoves()[launcherApp.game.getMarker()] == -1) {
 				menuMoveForward.setEnabled(false);
 				moveForward.setEnabled(false);
 			}
