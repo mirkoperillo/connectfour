@@ -148,7 +148,7 @@ public class MainFrame_NewGameBox extends JDialog {
 		network.setText("Network, versus: ");
 		if (!multiPlayer.isSelected())
 			network.setEnabled(false);
-		if (ownerFrm.launcherApp.networkGame.network)
+		if (ownerFrm.launcherApp.game.isNetworkGame())
 			network.setSelected(true);
 		network.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -275,7 +275,7 @@ public class MainFrame_NewGameBox extends JDialog {
 				ownerFrm.launcherApp.game.getPlayer1().setHuman(false);
 				ownerFrm.launcherApp.game.getPlayer2().setHuman(true);
 			}
-			ownerFrm.launcherApp.networkGame.network = false;
+			ownerFrm.launcherApp.game.setNetworkGame(false);
 		}
 
 		/* scelta partita multigiocatore... */
@@ -284,11 +284,11 @@ public class MainFrame_NewGameBox extends JDialog {
 			ownerFrm.launcherApp.game.getPlayer2().setHuman(true);
 			/* ...su un pc */
 			if (!network.isSelected() || !network.isEnabled()) {
-				ownerFrm.launcherApp.networkGame.network = false;
+				ownerFrm.launcherApp.game.setNetworkGame(false);
 			}
 			/* ...in rete */
 			else {
-				ownerFrm.launcherApp.networkGame.network = true;
+				ownerFrm.launcherApp.game.setNetworkGame(true);
 			}
 		}
 		ownerFrm.launcherApp.networkGame.hostName = enemyAddress.getText();

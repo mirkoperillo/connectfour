@@ -31,6 +31,9 @@ public class Game {
 	private int[] moves;
 	private int marker;
 
+	private String hostname;
+	private boolean networkGame;
+
 	public Game() {
 		player1 = new Player();
 		player1.setName("");
@@ -49,6 +52,7 @@ public class Game {
 		player2.setName(cfg.player2Name());
 		level = cfg.level();
 		singlePlayerGame = cfg.singlePlayerGame();
+		hostname = cfg.hostname();
 
 		moves = new int[42];
 		marker = 0;
@@ -129,6 +133,23 @@ public class Game {
 
 	public int getMarker() {
 		return marker;
+	}
+
+	public boolean isGameOver() {
+		// FIXME assign correct value, when is the game over ?
+		return false;
+	}
+
+	public boolean isNetworkGame() {
+		return networkGame;
+	}
+
+	public void setNetworkGame(boolean networkGame) {
+		this.networkGame = networkGame;
+	}
+
+	public String getHostname() {
+		return hostname;
 	}
 
 	/* run del thread */

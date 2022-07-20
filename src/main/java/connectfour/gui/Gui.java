@@ -72,7 +72,7 @@ public class Gui {
 		 * in rete non viene considerata l'ultima partita giocata; altrimenti viene
 		 * caricata - se precedentemente non era stata conclusa
 		 */
-		if (saveCfg.exists() && !networkGame.network) {
+		if (saveCfg.exists() && !game.isNetworkGame()) {
 			SavedGame savedGame = cfgManager.loadMoveList(saveCfg);
 			game.loadSavedGame(savedGame);
 		} /*

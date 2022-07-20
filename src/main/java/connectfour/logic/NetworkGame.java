@@ -49,9 +49,6 @@ public class NetworkGame {
 	/* nome o ip dell'avversario */
 	public String hostName;
 
-	/* abilita il gioco in rete */
-	public boolean network;
-
 	public NetworkGame(Gui gui) {
 		this.gui = gui;
 	}
