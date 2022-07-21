@@ -87,10 +87,8 @@ public class CfgManager {
 					cfr = "level";
 					if (tmp.startsWith(cfr)) {
 						if (tmp.endsWith("= 4;"))
-							// game.setLevel(Level.NORMAL);
 							level = Level.NORMAL;
 						else
-							// game.setLevel(Level.HARD);
 							level = Level.HARD;
 					}
 
