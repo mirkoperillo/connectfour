@@ -95,8 +95,9 @@ public class NetworkManager {
 			c_out = new PrintWriter(s.getOutputStream(), true);
 
 			/* avviso di avventuta connessione */
-			gui.window.statusBar.setText(" Connected to host " + s.getInetAddress().getHostName() + " at door: "
-					+ s.getLocalPort() + " from: " + s.getPort());
+			String connectionOkMsg = String.format("Connected to host %s, at door: %s from: %s",
+					s.getInetAddress().getHostName(), s.getLocalPort(), s.getPort());
+			gui.window.statusBarMsg(connectionOkMsg);
 
 			/*
 			 * inizio della partita come client - la ricerca di un server non ha dato
@@ -129,19 +130,19 @@ public class NetworkManager {
 				}
 			}
 		} catch (UnknownHostException uhe) {
-			gui.window.statusBar.setText(" Unknown host name...");
+			gui.window.statusBarMsg("Unknown host name...");
 		}
 		/* non trovando il server, il giocatore si offre di diventarlo */
 		catch (ConnectException ce) {
 			amIserver = true;
 			neturn = false;
-			gui.window.statusBar.setText(" Server not found, initializing new server...");
+			gui.window.statusBarMsg("Server not found, initializing new server...");
 		}
 		/* l'avversario ha terminato il programma, non c'� nessuno ad ascoltare */
 		catch (SocketException se) {
-			gui.window.statusBar.setText(" Net game is over (maybe no one hears you)");
+			gui.window.statusBarMsg("Net game is over (maybe no one hears you)");
 		} catch (Exception e) {
-			gui.window.statusBar.setText(" Net game is over (maybe no one hears you)");
+			gui.window.statusBarMsg("Net game is over (maybe no one hears you)");
 		}
 
 		/* inizializzazione del server */
@@ -149,9 +150,9 @@ public class NetworkManager {
 			try {
 				/* attesa del client */
 				ss = new ServerSocket(serverPort);
-				gui.window.statusBar.setText(" Waiting for your partner response...");
+				gui.window.statusBarMsg("Waiting for your partner response...");
 				s = ss.accept();
-				gui.window.statusBar.setText(" Connected to host " + s.getInetAddress().getHostName() + " at door: "
+				gui.window.statusBarMsg("Connected to host " + s.getInetAddress().getHostName() + " at door: "
 						+ s.getLocalPort() + " from: " + s.getPort());
 
 				/*
@@ -194,10 +195,10 @@ public class NetworkManager {
 			 * l'avversario ha terminato il programma, non c'� nessuno ad ascoltare
 			 */
 			catch (SocketException se) {
-				gui.window.statusBar.setText(" Net game is over (maybe no one hears you)");
+				gui.window.statusBarMsg("Net game is over (maybe no one hears you)");
 				se.printStackTrace();
 			} catch (Exception e) {
-				gui.window.statusBar.setText(" Net game is over (maybe no one hears you)");
+				gui.window.statusBarMsg("Net game is over (maybe no one hears you)");
 				e.printStackTrace();
 			}
 		}

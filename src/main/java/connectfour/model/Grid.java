@@ -20,10 +20,12 @@ import connectfour.gui.Gui;
  along with connectfour.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*classe che descrive e gestisce le configurazioni della griglia di gioco su cui si basa
- l'aggiornamento della grigglia grafica. La classe gestisce inoltre mediante i suoi metodi
- tutte le operazioni possibili sulla griglia di gioco, dall'inserimento alla rimozione,
- tutti i controlli relativi alle regole di gioco.
+/**
+ * classe che descrive e gestisce le configurazioni della griglia di gioco su
+ * cui si basa l'aggiornamento della grigglia grafica. La classe gestisce
+ * inoltre mediante i suoi metodi tutte le operazioni possibili sulla griglia di
+ * gioco, dall'inserimento alla rimozione, tutti i controlli relativi alle
+ * regole di gioco.
  */
 
 public class Grid {

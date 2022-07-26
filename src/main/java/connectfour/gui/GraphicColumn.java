@@ -43,14 +43,14 @@ public class GraphicColumn extends JPanel {
 	GraphicGrid ownerGrd;
 
 	/* layout del pannello */
-	GridLayout gridLayout;
+	private GridLayout gridLayout;
 	/* ogni singola colonna ha sei righe */
-	int columns = 1;
-	int rows = 6;
+	private int columns = 1;
+	private int rows = 6;
 
 	/* pannelli ed etichette su cui disegnare i gettoni o gli spazi vuoti */
-	JPanel row[] = new JPanel[6];
-	JLabel imageLabel[] = new JLabel[6];
+	private JPanel row[] = new JPanel[6];
+	private JLabel imageLabel[] = new JLabel[6];
 
 	/* Mouse Listener */
 	Mouse mouse = new Mouse(this);
@@ -115,7 +115,7 @@ public class GraphicColumn extends JPanel {
 		if (!ownerGrd.ownerFrm.gameOver || ownerGrd.ownerFrm.removing) {
 			int r = ownerGrd.ownerFrm.game.gameGrid.insertMove(id, ownerGrd.ownerFrm.game.gameGrid.currentPlayer);
 			if (r < 0) {
-				ownerGrd.ownerFrm.statusBar.setText(" Column " + (id + 1) + " is full...");
+				ownerGrd.ownerFrm.statusBarMsg("Column " + (id + 1) + " is full...");
 			} else {
 				ownerGrd.ownerFrm.removing = false;
 
@@ -123,7 +123,7 @@ public class GraphicColumn extends JPanel {
 				 * se l'inserzione avviene con successo non vengono mostrati messaggi di errore
 				 * o altri
 				 */
-				ownerGrd.ownerFrm.statusBar.setText(" ");
+				ownerGrd.ownerFrm.resetStatusBar();
 
 				/* aggiornamento della lista delle mosse a inserzione avvenuta */
 				ownerGrd.ownerFrm.game.nextMove(id);
@@ -362,5 +362,12 @@ public class GraphicColumn extends JPanel {
 			}
 		}
 		ownerGrd.ownerFrm.game.gameGrid.changeTurn();
+	}
+
+	public void render(int index, String gifName) {
+		row[index].removeAll();
+		imageLabel[index].removeAll();
+		imageLabel[index].setIcon(new ImageIcon(getClass().getResource(gifName)));
+		row[index].add(imageLabel[index], null);
 	}
 }

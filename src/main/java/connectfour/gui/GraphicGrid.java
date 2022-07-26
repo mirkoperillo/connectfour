@@ -21,7 +21,6 @@ package connectfour.gui;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 
-import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 public class GraphicGrid extends JPanel {
@@ -103,37 +102,25 @@ public class GraphicGrid extends JPanel {
 		/* orizzontale */
 		if (mode.startsWith("hr")) {
 			for (int i = startC; i < (startC + 4); i++) {
-				column[i].row[r].removeAll();
-				column[i].imageLabel[r].removeAll();
-				column[i].imageLabel[r].setIcon(new ImageIcon(getClass().getResource(gifName)));
-				column[i].row[r].add(column[i].imageLabel[r], null);
+				column[i].render(r, gifName);
 			}
 		}
 		/* verticale */
 		if (mode.startsWith("vr")) {
 			for (int i = r; i < (r + 4); i++) {
-				column[startC].row[i].removeAll();
-				column[startC].imageLabel[i].removeAll();
-				column[startC].imageLabel[i].setIcon(new ImageIcon(getClass().getResource(gifName)));
-				column[startC].row[i].add(column[startC].imageLabel[i], null);
+				column[startC].render(i, gifName);
 			}
 		}
 		/* diagonale sinistro */
 		if (mode.startsWith("dl")) {
 			for (int i = startR, j = startC; i < (startR + 4) && j > (startC - 4); i++, j--) {
-				column[j].row[i].removeAll();
-				column[j].imageLabel[i].removeAll();
-				column[j].imageLabel[i].setIcon(new ImageIcon(getClass().getResource(gifName)));
-				column[j].row[i].add(column[j].imageLabel[i], null);
+				column[j].render(i, gifName);
 			}
 		}
 		/* diagonale destro */
 		if (mode.startsWith("dr")) {
 			for (int i = startR, j = startC; i < (startR + 4) && j < (startC + 4); i++, j++) {
-				column[j].row[i].removeAll();
-				column[j].imageLabel[i].removeAll();
-				column[j].imageLabel[i].setIcon(new ImageIcon(getClass().getResource(gifName)));
-				column[j].row[i].add(column[j].imageLabel[i], null);
+				column[j].render(i, gifName);
 			}
 		}
 		this.updateUI();

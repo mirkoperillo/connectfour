@@ -72,30 +72,30 @@ public class MainFrame extends JFrame {
 	public Game game;
 
 	/* dichiarazione dei pannelli che costituiscono la finestra principale */
-	JPanel contentPane;
+	private JPanel contentPane;
 	public GraphicGrid graphicGrid;
-	BorderLayout borderLayout;
+	private BorderLayout borderLayout;
 
 	/* dichiarazione della barra di menu e dei relativi sottomenu */
-	JMenuBar menuBar;
-	JMenu menuGame;
-	JMenuItem menuGameNew;
-	JMenuItem menuGameQuit;
-	JMenu menuMove;
+	private JMenuBar menuBar;
+	private JMenu menuGame;
+	private JMenuItem menuGameNew;
+	private JMenuItem menuGameQuit;
+	private JMenu menuMove;
 	public JMenuItem menuMoveBack;
 	public JMenuItem menuMovePlay;
 	public JMenuItem menuMoveForward;
-	JMenu menuSettings;
-	JMenu menuSettingsLevel;
-	JCheckBoxMenuItem menuSettingsLevelNormal;
-	JCheckBoxMenuItem menuSettingsLevelHard;
-	JMenuItem menuSettingsPlayername;
-	JMenu menuHelp;
-	JMenuItem menuHelpAbout;
-	JMenuItem menuHelpHelp;
+	private JMenu menuSettings;
+	private JMenu menuSettingsLevel;
+	private JCheckBoxMenuItem menuSettingsLevelNormal;
+	private JCheckBoxMenuItem menuSettingsLevelHard;
+	private JMenuItem menuSettingsPlayername;
+	private JMenu menuHelp;
+	private JMenuItem menuHelpAbout;
+	private JMenuItem menuHelpHelp;
 
 	/* dichiarazione della toolbar e delle relative icone */
-	JToolBar toolBar;
+	private JToolBar toolBar;
 	public JButton newGame;
 	public JButton moveBack;
 	public JButton playHint;
@@ -105,7 +105,7 @@ public class MainFrame extends JFrame {
 	 * dichiarazione della barra di stato: essa fornisce utili informazioni durante
 	 * il gioco
 	 */
-	public JLabel statusBar = new JLabel(" ");
+	private JLabel statusBar = new JLabel(" ");
 
 	public MainFrame(Game game) {
 		try {
@@ -116,11 +116,10 @@ public class MainFrame extends JFrame {
 		eventAvoider = new ThreadMouse(this);
 
 		enableEvents(AWTEvent.WINDOW_EVENT_MASK);
-		// launcherApp = launcher;
 		this.game = game;
 		/* invocazione della funzione di inizializzazione */
 		try {
-			jbInit();
+			init();
 			eventAvoider.start();
 			this.validate();
 			/* centra il frame rispetto allo schermo */
@@ -146,7 +145,7 @@ public class MainFrame extends JFrame {
 	 * procedura di inizializzazione: crea in successione i menu con le relative
 	 * voci, la toolbar, la griglia virtuale di gioco
 	 */
-	private void jbInit() throws Exception {
+	private void init() throws Exception {
 		/* costruzione degli oggetti e in seguito del frame */
 
 		/* barra di stato (in basso) utile per messaggi all'utente */
@@ -439,10 +438,7 @@ public class MainFrame extends JFrame {
 		contentPane.add(graphicGrid, BorderLayout.CENTER);
 		contentPane.add(statusBar, BorderLayout.SOUTH);
 
-		/* conclusione dell'inizializzazione (con successo) */
-		String msg = new String();
-		msg = " Initilization completed";
-		statusBar.setText(msg);
+		statusBarMsg("Initilization completed");
 
 		/* caricamento di eventuale partita non terminata */
 		if (game.getMarker() > 0 && !game.isNetworkEnabled()) {
@@ -467,6 +463,14 @@ public class MainFrame extends JFrame {
 		for (int i = 0; i < game.getMarker(); i++) {
 			graphicGrid.loadGrid(game.getMoves()[i]);
 		}
+	}
+
+	public void statusBarMsg(String text) {
+		statusBar.setText(String.format(" %s", text));
+	}
+
+	public void resetStatusBar() {
+		statusBar.setText(" ");
 	}
 
 	/* avvio veloce dalla toolbar */
@@ -774,7 +778,7 @@ public class MainFrame extends JFrame {
 		try {
 			Runtime.getRuntime().exec(command);
 		} catch (IOException ioe) {
-			statusBar.setText(" Couldn't open your browser...");
+			statusBarMsg("Couldn't open your browser...");
 		}
 	}
 
@@ -799,4 +803,5 @@ public class MainFrame extends JFrame {
 		dlg.setModal(true);
 		dlg.setVisible(true);
 	}
+
 }
