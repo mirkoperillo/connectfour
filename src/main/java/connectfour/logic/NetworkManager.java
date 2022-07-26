@@ -12,7 +12,7 @@ import java.net.UnknownHostException;
 
 import connectfour.gui.Gui;
 
-public class NetworkGame {
+public class NetworkManager {
 
 	private Gui gui;
 
@@ -41,7 +41,7 @@ public class NetworkGame {
 	public boolean neturn = false;
 
 	/* dichiara se la rete è stata abilitata */
-	public boolean netenabled;
+	// public boolean netenabled;
 
 	/* identifica chi è il server */
 	public boolean amIserver = false;
@@ -49,7 +49,7 @@ public class NetworkGame {
 	/* nome o ip dell'avversario */
 	public String hostName;
 
-	public NetworkGame(Gui gui) {
+	public NetworkManager(Gui gui) {
 		this.gui = gui;
 	}
 
@@ -59,19 +59,19 @@ public class NetworkGame {
 	 * creazione della partita in rete: vengono disabilitate le opzioni di gioco a a
 	 * parte il fatto di potere reiniziare un'altra partita con altri giocatori rete
 	 */
-	public void enable_network() {
-		netenabled = true;
+	public void enableNetwork() {
+		// netenabled = true;
 
 		/*
 		 * disabilitati i tasti ed i menu di modifica della configurazione della partita
 		 */
-		gui.frame.menuMoveBack.setEnabled(false);
-		gui.frame.menuMovePlay.setEnabled(false);
-		gui.frame.menuMoveForward.setEnabled(false);
-		gui.frame.newGame.setEnabled(false);
-		gui.frame.moveBack.setEnabled(false);
-		gui.frame.playHint.setEnabled(false);
-		gui.frame.moveForward.setEnabled(false);
+		gui.window.menuMoveBack.setEnabled(false);
+		gui.window.menuMovePlay.setEnabled(false);
+		gui.window.menuMoveForward.setEnabled(false);
+		gui.window.newGame.setEnabled(false);
+		gui.window.moveBack.setEnabled(false);
+		gui.window.playHint.setEnabled(false);
+		gui.window.moveForward.setEnabled(false);
 		// frame.menuSettingsLevel.setEnabled(false);
 
 		/* nome o ip dell'avversario */
@@ -94,7 +94,7 @@ public class NetworkGame {
 			c_out = new PrintWriter(s.getOutputStream(), true);
 
 			/* avviso di avventuta connessione */
-			gui.frame.statusBar.setText(" Connected to host " + s.getInetAddress().getHostName() + " at door: "
+			gui.window.statusBar.setText(" Connected to host " + s.getInetAddress().getHostName() + " at door: "
 					+ s.getLocalPort() + " from: " + s.getPort());
 
 			/*
@@ -122,25 +122,25 @@ public class NetworkGame {
 					 * gioco e riceve il turno
 					 */
 					column = receive(c_in);
-					gui.frame.graphicGrid.loadGrid(column);
+					gui.window.graphicGrid.loadGrid(column);
 					gui.game.nextMove(column);
 					neturn = true;
 				}
 			}
 		} catch (UnknownHostException uhe) {
-			gui.frame.statusBar.setText(" Unknown host name...");
+			gui.window.statusBar.setText(" Unknown host name...");
 		}
 		/* non trovando il server, il giocatore si offre di diventarlo */
 		catch (ConnectException ce) {
 			amIserver = true;
 			neturn = false;
-			gui.frame.statusBar.setText(" Server not found, initializing new server...");
+			gui.window.statusBar.setText(" Server not found, initializing new server...");
 		}
 		/* l'avversario ha terminato il programma, non c'� nessuno ad ascoltare */
 		catch (SocketException se) {
-			gui.frame.statusBar.setText(" Net game is over (maybe no one hears you)");
+			gui.window.statusBar.setText(" Net game is over (maybe no one hears you)");
 		} catch (Exception e) {
-			gui.frame.statusBar.setText(" Net game is over (maybe no one hears you)");
+			gui.window.statusBar.setText(" Net game is over (maybe no one hears you)");
 		}
 
 		/* inizializzazione del server */
@@ -148,9 +148,9 @@ public class NetworkGame {
 			try {
 				/* attesa del client */
 				ss = new ServerSocket(serverPort);
-				gui.frame.statusBar.setText(" Waiting for your partner response...");
+				gui.window.statusBar.setText(" Waiting for your partner response...");
 				s = ss.accept();
-				gui.frame.statusBar.setText(" Connected to host " + s.getInetAddress().getHostName() + " at door: "
+				gui.window.statusBar.setText(" Connected to host " + s.getInetAddress().getHostName() + " at door: "
 						+ s.getLocalPort() + " from: " + s.getPort());
 
 				/*
@@ -183,7 +183,7 @@ public class NetworkGame {
 						 * gioco e riceve il turno
 						 */
 						column = receive(s_in);
-						gui.frame.graphicGrid.loadGrid(column);
+						gui.window.graphicGrid.loadGrid(column);
 						gui.game.nextMove(column);
 						neturn = true;
 					}
@@ -193,14 +193,25 @@ public class NetworkGame {
 			 * l'avversario ha terminato il programma, non c'� nessuno ad ascoltare
 			 */
 			catch (SocketException se) {
-				gui.frame.statusBar.setText(" Net game is over (maybe no one hears you)");
+				gui.window.statusBar.setText(" Net game is over (maybe no one hears you)");
 				se.printStackTrace();
 			} catch (Exception e) {
-				gui.frame.statusBar.setText(" Net game is over (maybe no one hears you)");
+				gui.window.statusBar.setText(" Net game is over (maybe no one hears you)");
 				e.printStackTrace();
 			}
 		}
 		// try{ s.close();}catch(Exception e){}
+	}
+
+	public void disableNetwork() {
+		try {
+			s.close();
+		} catch (Exception ex) {
+		}
+		try {
+			ss.close();
+		} catch (Exception exc) {
+		}
 	}
 
 	/* procedura di invio dati in rete */

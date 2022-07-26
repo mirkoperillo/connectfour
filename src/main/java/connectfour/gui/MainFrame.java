@@ -41,6 +41,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
+import javax.swing.UIManager;
 
 import connectfour.logic.CfgManager;
 import connectfour.logic.EuristicTree;
@@ -60,7 +61,8 @@ public class MainFrame extends JFrame {
 	public boolean removing = false;
 
 	/* l'applicazione che ha aperto il frame */
-	Gui launcherApp;
+	// Gui launcherApp;
+	Game game;
 
 	/* dichiarazione dei pannelli che costituiscono la finestra principale */
 	JPanel contentPane;
@@ -98,16 +100,36 @@ public class MainFrame extends JFrame {
 	 */
 	public JLabel statusBar = new JLabel(" ");
 
-	public MainFrame(Gui launcher) {
+	public MainFrame(Game game) {
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		eventAvoider = new ThreadMouse(this);
 
 		enableEvents(AWTEvent.WINDOW_EVENT_MASK);
-		launcherApp = launcher;
+		// launcherApp = launcher;
+		this.game = game;
 		/* invocazione della funzione di inizializzazione */
 		try {
 			jbInit();
 			eventAvoider.start();
+			this.validate();
+			/* centra il frame rispetto allo schermo */
+			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+			Dimension frameSize = getSize();
+			if (frameSize.height > screenSize.height)
+				frameSize.height = screenSize.height;
+			if (frameSize.width > screenSize.width)
+				frameSize.width = screenSize.width;
+			setLocation((screenSize.width - frameSize.width) / 2, (screenSize.height - frameSize.height) / 2);
 
+			/* il frame non � ridimensionabile */
+			setResizable(false);
+
+			/* il frame � sempre visualizzato */
+			setVisible(true);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -237,7 +259,7 @@ public class MainFrame extends JFrame {
 				menuSettingsLevelHard_actionPerformed(e);
 			}
 		});
-		if (launcherApp.game.getLevel() == Level.HARD) {
+		if (game.getLevel() == Level.HARD) {
 			menuSettingsLevelNormal.setState(false);
 			menuSettingsLevelHard.setState(true);
 		} else {
@@ -416,16 +438,16 @@ public class MainFrame extends JFrame {
 		statusBar.setText(msg);
 
 		/* caricamento di eventuale partita non terminata */
-		if (launcherApp.game.getMarker() > 0 && !launcherApp.networkGame.netenabled) {
+		if (game.getMarker() > 0 && !game.isNetworkEnabled()) {
 			loadGame();
 			/* se tocca al giocatore 1 che � computer, gioca */
-			if (launcherApp.gameGrid.currentPlayer > 0 && !launcherApp.game.getPlayer1().isHuman())
+			if (game.gameGrid.currentPlayer > 0 && !game.getPlayer1().isHuman())
 				this.menuMovePlay_actionPerformed(null);
-			else if (launcherApp.gameGrid.currentPlayer < 0 && !launcherApp.game.getPlayer2().isHuman())
+			else if (game.gameGrid.currentPlayer < 0 && !game.getPlayer2().isHuman())
 				this.menuMovePlay_actionPerformed(null);
 		} else {
 			/* se il primo giocatore � il computer, gioca la sua mossa */
-			if (!launcherApp.game.getPlayer1().isHuman() && !launcherApp.networkGame.netenabled)
+			if (!game.getPlayer1().isHuman() && !game.isNetworkEnabled())
 				this.menuMovePlay_actionPerformed(null);
 		}
 	}
@@ -435,8 +457,8 @@ public class MainFrame extends JFrame {
 	 * inserendo i gettoni nella griglia tramite il metodo loadGrid
 	 */
 	void loadGame() {
-		for (int i = 0; i < launcherApp.game.getMarker(); i++) {
-			graphicGrid.loadGrid(launcherApp.game.getMoves()[i]);
+		for (int i = 0; i < game.getMarker(); i++) {
+			graphicGrid.loadGrid(game.getMoves()[i]);
 		}
 	}
 
@@ -446,28 +468,28 @@ public class MainFrame extends JFrame {
 		 * in rete non � concesso iniziare una partita quando si vuole; � automatico
 		 * dopo la fine di una partita
 		 */
-		if (launcherApp.networkGame.netenabled && !gameOver)
+		if (game.isNetworkEnabled() && !gameOver)
 			return;
 
 		/* svuota la griglia grafica virtuale */
 		graphicGrid.cleanGrid();
 
 		/* svuota la griglia fisica */
-		launcherApp.gameGrid.init();
+		game.gameGrid.init();
 
 		/* reinizializza le variabili e la lista delle mosse attive */
 		gameOver = false;
 		removing = false;
-		launcherApp.gameGrid.currentPlayer = 1;
-		if (launcherApp.networkGame.netenabled)
-			launcherApp.gameGrid.currentPlayer *= -1;
+		game.gameGrid.currentPlayer = 1;
+		if (game.isNetworkEnabled())
+			game.gameGrid.currentPlayer *= -1;
 
 		/* svuotato il vettore mosse */
-		launcherApp.game.reset();
+		game.reset();
 		graphicGrid.updateUI();
 
 		/* servizi disabilitati in modalita' rete */
-		if (!launcherApp.networkGame.netenabled) {
+		if (!game.isNetworkEnabled()) {
 			menuMoveBack.setEnabled(false);
 			menuMovePlay.setEnabled(true);
 			menuMoveForward.setEnabled(false);
@@ -476,7 +498,7 @@ public class MainFrame extends JFrame {
 		}
 
 		/* livello corrente di gioco */
-		if (launcherApp.game.getLevel() == Level.HARD) {
+		if (game.getLevel() == Level.HARD) {
 			menuSettingsLevelNormal.setState(false);
 			menuSettingsLevelHard.setState(true);
 		} else {
@@ -485,7 +507,7 @@ public class MainFrame extends JFrame {
 		}
 
 		/* se tocca al computer, esso gioca la propria mossa */
-		if (!launcherApp.game.getPlayer1().isHuman()) {
+		if (!game.getPlayer1().isHuman()) {
 			this.menuMovePlay_actionPerformed(null);
 		}
 	}
@@ -502,21 +524,21 @@ public class MainFrame extends JFrame {
 		dlg.show();
 
 		/* se viene premuto il tasto cancel nel dialog torniamo alla partita */
-		if (!launcherApp.beginNewMatch)
+		if (!game.isBeginNewMatch())
 			return;
 
 		/* le componenti vengono reinizializzate */
 		graphicGrid.cleanGrid();
-		launcherApp.gameGrid.init();
+		game.gameGrid.init();
 
 		gameOver = false;
 		removing = false;
 
-		launcherApp.gameGrid.currentPlayer = 1;
-		launcherApp.game.reset();
+		game.gameGrid.currentPlayer = 1;
+		game.reset();
 
 		graphicGrid.updateUI();
-		if (!launcherApp.game.isNetworkGame()) {
+		if (!game.isNetworkGame()) {
 			newGame.setEnabled(true);
 			menuMoveBack.setEnabled(false);
 			menuMovePlay.setEnabled(true);
@@ -525,7 +547,7 @@ public class MainFrame extends JFrame {
 			moveForward.setEnabled(false);
 		}
 
-		if (launcherApp.game.getLevel() == Level.HARD) {
+		if (game.getLevel() == Level.HARD) {
 			menuSettingsLevelNormal.setState(false);
 			menuSettingsLevelHard.setState(true);
 		} else {
@@ -534,44 +556,45 @@ public class MainFrame extends JFrame {
 		}
 
 		/* se abilitiamo la modalita' rete per la prima volta */
-		if (launcherApp.game.isNetworkGame() && !launcherApp.networkGame.netenabled) {
+		if (game.isNetworkGame() && !game.isNetworkEnabled()) {
 			/* apre il thread */
 			Game g = new Game();
 			// g.start();
 			g.newGame();
 		} else {
 			/* se abbiamo appena finito di giocare in rete... */
-			if (launcherApp.networkGame.netenabled) {
+			if (game.isNetworkEnabled()) {
 				/* ...e vogliamo smettere */
-				if (!launcherApp.game.isNetworkGame()) {
-					launcherApp.networkGame.netenabled = false;
-					try {
-						launcherApp.networkGame.s.close();
-					} catch (Exception ex) {
-					}
-					try {
-						launcherApp.networkGame.ss.close();
-					} catch (Exception exc) {
-					}
+				if (!game.isNetworkGame()) {
+					game.disableNetwork();
+//					try {
+//						game.networkGame.s.close();
+//					} catch (Exception ex) {
+//					}
+//					try {
+//						game.networkGame.ss.close();
+//					} catch (Exception exc) {
+//					}
 				}
 				/* ...e vogliamo continuare con altri giocatori in rete */
 				else {
-					try {
-						launcherApp.networkGame.s.close();
-					} catch (Exception ex) {
-					}
-					try {
-						launcherApp.networkGame.ss.close();
-					} catch (Exception exc) {
-					}
-					Game g = new Game();
+//					try {
+//						game.networkGame.s.close();
+//					} catch (Exception ex) {
+//					}
+//					try {
+//						game.networkGame.ss.close();
+//					} catch (Exception exc) {
+//					}
+					game.disableNetwork();
+					Game g = new Game(); // ???
 					// g.start();
 					g.newGame();
 				}
 			}
 		}
 		/* se il computer � il primo a dover giocare, lo fa */
-		if (!launcherApp.game.getPlayer1().isHuman() && !launcherApp.game.isNetworkGame()) {
+		if (!game.getPlayer1().isHuman() && !game.isNetworkGame()) {
 			this.menuMovePlay_actionPerformed(null);
 		}
 	}
@@ -580,7 +603,7 @@ public class MainFrame extends JFrame {
 	public void menuGameQuit_actionPerformed(ActionEvent e) throws Exception {
 
 		CfgManager cfgManager = new CfgManager();
-		cfgManager.saveCfg(launcherApp.game);
+		cfgManager.saveCfg(game);
 
 		System.exit(0);
 	}
@@ -588,7 +611,7 @@ public class MainFrame extends JFrame {
 	/* attivazione di Move>Back */
 	public void menuMoveBack_actionPerformed(ActionEvent e) {
 		/* se la griglia non e' vuota possiamo togliere l'ultimo gettone */
-		if (launcherApp.game.getMarker() > 0) {
+		if (game.getMarker() > 0) {
 			removing = true;
 			/* se prima la partita era finita puo' essere rigiocata */
 			gameOver = false;
@@ -596,9 +619,9 @@ public class MainFrame extends JFrame {
 			 * se la partita e' contro un pc, torna indietro fino alla nostra mossa
 			 * precedente, ossia di due mosse; altrimenti di una
 			 */
-			if (launcherApp.gameGrid.currentPlayer > 0) {
-				if (!launcherApp.game.getPlayer2().isHuman() && launcherApp.game.getPlayer1().isHuman()) {
-					if (launcherApp.game.getMarker() >= 2) {
+			if (game.gameGrid.currentPlayer > 0) {
+				if (!game.getPlayer2().isHuman() && game.getPlayer1().isHuman()) {
+					if (game.getMarker() >= 2) {
 						graphicGrid.removeLast();
 						graphicGrid.removeLast();
 					}
@@ -607,8 +630,8 @@ public class MainFrame extends JFrame {
 			}
 			/* la stessa cosa per il giocatore 2 */
 			else {
-				if (launcherApp.game.getPlayer2().isHuman() && !launcherApp.game.getPlayer1().isHuman()) {
-					if (launcherApp.game.getMarker() >= 2) {
+				if (game.getPlayer2().isHuman() && !game.getPlayer1().isHuman()) {
+					if (game.getMarker() >= 2) {
 						graphicGrid.removeLast();
 						graphicGrid.removeLast();
 					}
@@ -617,7 +640,7 @@ public class MainFrame extends JFrame {
 			}
 		}
 		/* dalla griglia vuota non e' possibile tornare indietro */
-		if (launcherApp.game.getMarker() <= 0) {
+		if (game.getMarker() <= 0) {
 			menuMoveBack.setEnabled(false);
 			moveBack.setEnabled(false);
 		} else {
@@ -637,25 +660,25 @@ public class MainFrame extends JFrame {
 		 * scegliere la mossa all'intelligenza artificiale
 		 */
 		if (!gameOver) {
-			EuristicTree tmpTree = new EuristicTree(launcherApp);
-			tmpTree.build(launcherApp.gameGrid, launcherApp.gameGrid.currentPlayer, launcherApp.game.getLevel());
-			int toPlay = tmpTree.play(launcherApp.gameGrid.currentPlayer);
+			EuristicTree tmpTree = new EuristicTree();
+			tmpTree.build(game.gameGrid, game.gameGrid.currentPlayer, game.getLevel());
+			int toPlay = tmpTree.play(game.gameGrid.currentPlayer);
 			graphicGrid.loadGrid(toPlay);
-			launcherApp.game.nextMove(toPlay);
-			if (launcherApp.gameGrid.currentPlayer > 0) {
-				if (!launcherApp.game.getPlayer1().isHuman() && launcherApp.game.getPlayer2().isHuman()) {
+			game.nextMove(toPlay);
+			if (game.gameGrid.currentPlayer > 0) {
+				if (!game.getPlayer1().isHuman() && game.getPlayer2().isHuman()) {
 					menuMovePlay_actionPerformed(null);
 				}
 			} else {
-				if (!launcherApp.game.getPlayer2().isHuman() && launcherApp.game.getPlayer1().isHuman()) {
+				if (!game.getPlayer2().isHuman() && game.getPlayer1().isHuman()) {
 					menuMovePlay_actionPerformed(null);
 				}
 			}
 		}
 
 		/* se la partita non e' terminata la funzione e' abilitata */
-		if (launcherApp.game.getMarker() < 42) {
-			if (launcherApp.game.getMoves()[launcherApp.game.getMarker()] == -1)
+		if (game.getMarker() < 42) {
+			if (game.getMoves()[game.getMarker()] == -1)
 				if (e == null) {
 					menuMoveForward.setEnabled(false);
 					moveForward.setEnabled(false);
@@ -675,22 +698,22 @@ public class MainFrame extends JFrame {
 		 * disabilita in rete sempre, a fine partita, o quando viene fatta
 		 * un'inserzione. Se il computer ha gia' giocato, si reinseriscono due gettoni.
 		 */
-		if (launcherApp.game.getMoves()[launcherApp.game.getMarker()] != -1) {
-			graphicGrid.loadGrid(launcherApp.game.lastMove());
+		if (game.getMoves()[game.getMarker()] != -1) {
+			graphicGrid.loadGrid(game.lastMove());
 		}
 
-		if (launcherApp.gameGrid.currentPlayer > 0) {
-			if (!launcherApp.game.getPlayer1().isHuman() && launcherApp.game.getPlayer2().isHuman()) {
+		if (game.gameGrid.currentPlayer > 0) {
+			if (!game.getPlayer1().isHuman() && game.getPlayer2().isHuman()) {
 				menuMovePlay_actionPerformed(null);
 			}
 		} else {
-			if (!launcherApp.game.getPlayer2().isHuman() && launcherApp.game.getPlayer1().isHuman()) {
+			if (!game.getPlayer2().isHuman() && game.getPlayer1().isHuman()) {
 				menuMovePlay_actionPerformed(null);
 			}
 		}
 
-		if (launcherApp.game.getMarker() < 41) {
-			if (launcherApp.game.getMoves()[launcherApp.game.getMarker()] == -1) {
+		if (game.getMarker() < 41) {
+			if (game.getMoves()[game.getMarker()] == -1) {
 				menuMoveForward.setEnabled(false);
 				moveForward.setEnabled(false);
 			}
@@ -706,14 +729,14 @@ public class MainFrame extends JFrame {
 	public void menuSettingsLevelNormal_actionPerformed(ActionEvent e) {
 		menuSettingsLevelNormal.setState(true);
 		menuSettingsLevelHard.setState(false);
-		launcherApp.game.setLevel(Level.NORMAL);
+		game.setLevel(Level.NORMAL);
 	}
 
 	/* attivazione Settings>Level>Normal */
 	public void menuSettingsLevelHard_actionPerformed(ActionEvent e) {
 		menuSettingsLevelNormal.setState(false);
 		menuSettingsLevelHard.setState(true);
-		launcherApp.game.setLevel(Level.HARD);
+		game.setLevel(Level.HARD);
 	}
 
 	/* attivazione Settings>Playername */

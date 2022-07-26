@@ -5,3 +5,5 @@ bin/
 dist/
 
 /target/
+cfg.txt
+save.txt

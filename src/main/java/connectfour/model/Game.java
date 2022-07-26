@@ -34,6 +34,11 @@ public class Game {
 	private String hostname;
 	private boolean networkGame;
 
+	private boolean netenabled;
+
+	public Grid gameGrid;
+	private boolean beginNewMatch = true;
+
 	public Game() {
 		player1 = new Player();
 		player1.setName("");
@@ -43,6 +48,8 @@ public class Game {
 		singlePlayerGame = true;
 		moves = new int[42];
 		marker = 0;
+
+		gameGrid = new Grid();
 	}
 
 	public Game(Configuration cfg) {
@@ -56,10 +63,18 @@ public class Game {
 
 		moves = new int[42];
 		marker = 0;
+
+		gameGrid = new Grid();
 	}
 
+	// FIXME needed ??
 	public void newGame() {
 		// gui.networkGame.enable_network();
+	}
+
+	public void newNetworkGame() {
+		netenabled = true;
+		// start server networkManager.startServer()
 	}
 
 	public Player getPlayer1() {
@@ -144,12 +159,33 @@ public class Game {
 		return networkGame;
 	}
 
+	public boolean isNetworkEnabled() {
+		return netenabled;
+	}
+
 	public void setNetworkGame(boolean networkGame) {
 		this.networkGame = networkGame;
 	}
 
 	public String getHostname() {
 		return hostname;
+	}
+
+	public void disableNetwork() {
+		netenabled = false;
+		// networkManager.disableNetwork()
+	}
+
+	public void setHostname(String hostname) {
+		this.hostname = hostname;
+	}
+
+	public boolean isBeginNewMatch() {
+		return beginNewMatch;
+	}
+
+	public void setBeginNewMatch(boolean beginNewMatch) {
+		this.beginNewMatch = beginNewMatch;
 	}
 
 	/* run del thread */

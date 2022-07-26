@@ -26,6 +26,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import connectfour.model.Grid.Winner;
+
 public class GraphicColumn extends JPanel {
 
 	/* variabili */
@@ -97,19 +99,19 @@ public class GraphicColumn extends JPanel {
 		 * protezione dall'evento 'mouseClicked' durante una partita in rete mentre il
 		 * turno � dell'avversario oppure dopo avere inserito un gettone
 		 */
-		if (ownerGrd.ownerFrm.launcherApp.networkGame.netenabled)
-			if (ownerGrd.ownerFrm.launcherApp.networkGame.myColumn != -1)
-				return;
-		if (ownerGrd.ownerFrm.launcherApp.networkGame.netenabled && !ownerGrd.ownerFrm.launcherApp.networkGame.neturn)
-			return;
+		// FIXME
+//		if (ownerGrd.ownerFrm.launcherApp.game.isNetworkEnabled())
+//			if (ownerGrd.ownerFrm.launcherApp.networkGame.myColumn != -1)
+//				return;
+//		if (ownerGrd.ownerFrm.launcherApp.game.isNetworkEnabled() && !ownerGrd.ownerFrm.launcherApp.networkGame.neturn)
+//			return;
 
 		/*
 		 * il click ha effetto soltanto su configurazioni di partite non concluse oppure
 		 * su quelle concluse ma da cui poi sono state rimossi uno o pi� gettoni
 		 */
 		if (!ownerGrd.ownerFrm.gameOver || ownerGrd.ownerFrm.removing) {
-			int r = ownerGrd.ownerFrm.launcherApp.gameGrid.insertMove(id,
-					ownerGrd.ownerFrm.launcherApp.gameGrid.currentPlayer);
+			int r = ownerGrd.ownerFrm.game.gameGrid.insertMove(id, ownerGrd.ownerFrm.game.gameGrid.currentPlayer);
 			if (r < 0) {
 				ownerGrd.ownerFrm.statusBar.setText(" Column " + (id + 1) + " is full...");
 			} else {
@@ -122,9 +124,9 @@ public class GraphicColumn extends JPanel {
 				ownerGrd.ownerFrm.statusBar.setText(" ");
 
 				/* aggiornamento della lista delle mosse a inserzione avvenuta */
-				ownerGrd.ownerFrm.launcherApp.game.nextMove(id);
+				ownerGrd.ownerFrm.game.nextMove(id);
 
-				if (!ownerGrd.ownerFrm.launcherApp.networkGame.netenabled) {
+				if (!ownerGrd.ownerFrm.game.isNetworkEnabled()) {
 					/*
 					 * dopo aver inserito un gettone automaticamente possiamo anche toglierlo
 					 */
@@ -140,7 +142,7 @@ public class GraphicColumn extends JPanel {
 					 * la 42esima � l'ultima mossa possibile: non ha pi� senso accettare i
 					 * suggerimenti
 					 */
-					if (ownerGrd.ownerFrm.launcherApp.game.noMoreMoves()) {
+					if (ownerGrd.ownerFrm.game.noMoreMoves()) {
 						ownerGrd.ownerFrm.playHint.setEnabled(false);
 						ownerGrd.ownerFrm.menuMovePlay.setEnabled(false);
 					}
@@ -148,7 +150,7 @@ public class GraphicColumn extends JPanel {
 				/* aggiornamento della grafica: inserzione virtuale del gettone */
 				// row[r].removeAll();
 				// imageLabel[r].removeAll();
-				if (ownerGrd.ownerFrm.launcherApp.gameGrid.currentPlayer > 0)
+				if (ownerGrd.ownerFrm.game.gameGrid.currentPlayer > 0)
 					imageLabel[r].setIcon(new ImageIcon(getClass().getResource("/icons/yellow.gif")));
 				else
 					imageLabel[r].setIcon(new ImageIcon(getClass().getResource("/icons/red.gif")));
@@ -157,8 +159,11 @@ public class GraphicColumn extends JPanel {
 				row[r].paint(row[r].getGraphics());
 
 				/* controllo della vincita */
-				if (ownerGrd.ownerFrm.launcherApp.gameGrid.isWon(id)) {
-
+				Winner win = ownerGrd.ownerFrm.game.gameGrid.isWon(id);
+				if (win.isWin()) {
+					ownerGrd.mode = win.mode();
+					ownerGrd.startC = win.startC();
+					ownerGrd.startR = win.startR();
 					ownerGrd.ownerFrm.gameOver = true;
 					ownerGrd.ownerFrm.removing = false;
 
@@ -166,27 +171,27 @@ public class GraphicColumn extends JPanel {
 					 * evidenziamo il quattro con una breve animazione che termina non appena si d�
 					 * conferma che la partita � conclusa
 					 */
-					if (ownerGrd.ownerFrm.launcherApp.gameGrid.currentPlayer > 0)
+					if (ownerGrd.ownerFrm.game.gameGrid.currentPlayer > 0)
 						ownerGrd.markFour(r, "yellow_spin.gif");
 					else
 						ownerGrd.markFour(r, "red_spin.gif");
 
 					/* creazione del messaggio di vittoria (o sconfitta) */
 					String message = new String();
-					int winner = ownerGrd.ownerFrm.launcherApp.gameGrid.currentPlayer;
+					int winner = ownerGrd.ownerFrm.game.gameGrid.currentPlayer;
 
 					/* se la partita � vinta dal giocatore 1... */
 					if (winner > 0)
-						message = "Hai vinto " + ownerGrd.ownerFrm.launcherApp.game.getPlayer1().getName() + "!";
+						message = "Hai vinto " + ownerGrd.ownerFrm.game.getPlayer1().getName() + "!";
 					/* se la partita � vinta dal giocatore 2... */
 					else
-						message = "Hai vinto " + ownerGrd.ownerFrm.launcherApp.game.getPlayer2().getName() + "!";
+						message = "Hai vinto " + ownerGrd.ownerFrm.game.getPlayer2().getName() + "!";
 
 					/* invio del messaggio di fine partita */
 					ownerGrd.ownerFrm.gameOver(message);
 
 					/* animazione */
-					if (ownerGrd.ownerFrm.launcherApp.gameGrid.currentPlayer > 0)
+					if (ownerGrd.ownerFrm.game.gameGrid.currentPlayer > 0)
 						ownerGrd.markFour(r, "yellow.gif");
 					else
 						ownerGrd.markFour(r, "red.gif");
@@ -198,18 +203,18 @@ public class GraphicColumn extends JPanel {
 					/*
 					 * non appena il gioco in rete finisce, riparte una nuova partita
 					 */
-					if (ownerGrd.ownerFrm.launcherApp.networkGame.netenabled) {
+					if (ownerGrd.ownerFrm.game.isNetworkEnabled()) {
 						ownerGrd.ownerFrm.menuQuickNew_actionPerformed(null);
 					}
 				}
 
 				/* conclusione in parit� */
-				else if (ownerGrd.ownerFrm.launcherApp.gameGrid.isFull()) {
+				else if (ownerGrd.ownerFrm.game.gameGrid.isFull()) {
 					ownerGrd.ownerFrm.gameOver = true;
 					ownerGrd.ownerFrm.removing = false;
 					String message = "Partita pari...";
 					ownerGrd.ownerFrm.gameOver(message);
-					if (ownerGrd.ownerFrm.launcherApp.networkGame.netenabled) {
+					if (ownerGrd.ownerFrm.game.isNetworkEnabled()) {
 						ownerGrd.ownerFrm.menuQuickNew_actionPerformed(null);
 					}
 				}
@@ -218,21 +223,21 @@ public class GraphicColumn extends JPanel {
 				 * la colonna giocata passa da -1 a 'id' (ossia questa colonna), nel caso
 				 * giocassimo in rete
 				 */
-				if (ownerGrd.ownerFrm.launcherApp.networkGame.netenabled)
-					ownerGrd.ownerFrm.launcherApp.networkGame.myColumn = id;
+				// FIXME
+//				if (ownerGrd.ownerFrm.launcherApp.game.isNetworkEnabled())
+//					ownerGrd.ownerFrm.launcherApp.networkGame.myColumn = id;
 
 				/* cambia il turno del giocatore */
-				ownerGrd.ownerFrm.launcherApp.gameGrid.changeTurn();
+				ownerGrd.ownerFrm.game.gameGrid.changeTurn();
 
 				/*
 				 * se tocca al computer, questo gioca automaticamente la sua mossa
 				 */
 
-				if (ownerGrd.ownerFrm.launcherApp.gameGrid.currentPlayer > 0
-						&& !ownerGrd.ownerFrm.launcherApp.game.getPlayer1().isHuman())
+				if (ownerGrd.ownerFrm.game.gameGrid.currentPlayer > 0 && !ownerGrd.ownerFrm.game.getPlayer1().isHuman())
 					ownerGrd.ownerFrm.menuMovePlay_actionPerformed(null);
-				else if (ownerGrd.ownerFrm.launcherApp.gameGrid.currentPlayer < 0
-						&& !ownerGrd.ownerFrm.launcherApp.game.getPlayer2().isHuman())
+				else if (ownerGrd.ownerFrm.game.gameGrid.currentPlayer < 0
+						&& !ownerGrd.ownerFrm.game.getPlayer2().isHuman())
 					ownerGrd.ownerFrm.menuMovePlay_actionPerformed(null);
 
 				synchronized (this.ownerGrd.ownerFrm) {
@@ -253,11 +258,11 @@ public class GraphicColumn extends JPanel {
 	 * sovrascritta
 	 */
 	void removeLast() {
-		int r = ownerGrd.ownerFrm.launcherApp.gameGrid.numberRow(id);
+		int r = ownerGrd.ownerFrm.game.gameGrid.numberRow(id);
 		/* cancellazione fisica della mossa dalla griglia */
-		ownerGrd.ownerFrm.launcherApp.gameGrid.removeMove(id);
+		ownerGrd.ownerFrm.game.gameGrid.removeMove(id);
 		/* cambio giocatore a quello che ha rimosso */
-		ownerGrd.ownerFrm.launcherApp.gameGrid.changeTurn();
+		ownerGrd.ownerFrm.game.gameGrid.changeTurn();
 
 		/* eliminazione del gettone virtuale, si sostituisce con un vuoto */
 		row[r].removeAll();
@@ -285,11 +290,10 @@ public class GraphicColumn extends JPanel {
 	 */
 	void loadPawn() {
 		if (!ownerGrd.ownerFrm.gameOver || ownerGrd.ownerFrm.removing) {
-			int r = ownerGrd.ownerFrm.launcherApp.gameGrid.insertMove(id,
-					ownerGrd.ownerFrm.launcherApp.gameGrid.currentPlayer);
+			int r = ownerGrd.ownerFrm.game.gameGrid.insertMove(id, ownerGrd.ownerFrm.game.gameGrid.currentPlayer);
 			// row[r].removeAll();
 			// imageLabel[r].removeAll();
-			if (ownerGrd.ownerFrm.launcherApp.gameGrid.currentPlayer > 0)
+			if (ownerGrd.ownerFrm.game.gameGrid.currentPlayer > 0)
 				imageLabel[r].setIcon(new ImageIcon(getClass().getResource("/icons/yellow.gif")));
 			else
 				imageLabel[r].setIcon(new ImageIcon(getClass().getResource("/icons/red.gif")));
@@ -298,38 +302,42 @@ public class GraphicColumn extends JPanel {
 			row[r].paint(row[r].getGraphics());
 
 			/* controllo vincita */
-			if (ownerGrd.ownerFrm.launcherApp.gameGrid.isWon(id)) {
+			Winner win = ownerGrd.ownerFrm.game.gameGrid.isWon(id);
+			if (win.isWin()) {
+				ownerGrd.mode = win.mode();
+				ownerGrd.startC = win.startC();
+				ownerGrd.startR = win.startR();
 				ownerGrd.ownerFrm.gameOver = true;
 				ownerGrd.ownerFrm.removing = false;
-				if (ownerGrd.ownerFrm.launcherApp.gameGrid.currentPlayer > 0)
+				if (ownerGrd.ownerFrm.game.gameGrid.currentPlayer > 0)
 					ownerGrd.markFour(r, "yellow_spin.gif");
 				else
 					ownerGrd.markFour(r, "red_spin.gif");
 
-				int winner = ownerGrd.ownerFrm.launcherApp.gameGrid.currentPlayer;
+				int winner = ownerGrd.ownerFrm.game.gameGrid.currentPlayer;
 				String message = new String();
 				/* se vince il giocatore 1 */
 				if (winner > 0) {
-					if (ownerGrd.ownerFrm.launcherApp.game.getPlayer1().isHuman())
-						message = "Hai vinto, " + ownerGrd.ownerFrm.launcherApp.game.getPlayer1().getName() + "!";
+					if (ownerGrd.ownerFrm.game.getPlayer1().isHuman())
+						message = "Hai vinto, " + ownerGrd.ownerFrm.game.getPlayer1().getName() + "!";
 					else
 						message = "Hai perso...";
 				}
 				/* se vince il giocatore 2 */
 				else {
-					if (ownerGrd.ownerFrm.launcherApp.game.getPlayer2().isHuman())
-						message = "Hai vinto, " + ownerGrd.ownerFrm.launcherApp.game.getPlayer2().getName() + "!";
+					if (ownerGrd.ownerFrm.game.getPlayer2().isHuman())
+						message = "Hai vinto, " + ownerGrd.ownerFrm.game.getPlayer2().getName() + "!";
 					else
 						message = "Hai perso...";
 				}
 				/*
 				 * quando invece il gettone viene caricato dalla rete (sempre persa)
 				 */
-				if (ownerGrd.ownerFrm.launcherApp.networkGame.netenabled)
+				if (ownerGrd.ownerFrm.game.isNetworkEnabled())
 					message = "Hai perso...";
 				ownerGrd.ownerFrm.gameOver(message);
 
-				if (ownerGrd.ownerFrm.launcherApp.gameGrid.currentPlayer > 0)
+				if (ownerGrd.ownerFrm.game.gameGrid.currentPlayer > 0)
 					ownerGrd.markFour(r, "yellow.gif");
 				else
 					ownerGrd.markFour(r, "red.gif");
@@ -337,20 +345,20 @@ public class GraphicColumn extends JPanel {
 				ownerGrd.startC = -1;
 				ownerGrd.startR = -1;
 
-				if (ownerGrd.ownerFrm.launcherApp.networkGame.netenabled) {
+				if (ownerGrd.ownerFrm.game.isNetworkEnabled()) {
 					ownerGrd.ownerFrm.menuQuickNew_actionPerformed(null);
 				}
 			}
 			/* controllo pareggio */
-			else if (ownerGrd.ownerFrm.launcherApp.gameGrid.isFull()) {
+			else if (ownerGrd.ownerFrm.game.gameGrid.isFull()) {
 				ownerGrd.ownerFrm.gameOver = true;
 				ownerGrd.ownerFrm.removing = false;
 				String message = "Partita pari...";
 				ownerGrd.ownerFrm.gameOver(message);
-				if (ownerGrd.ownerFrm.launcherApp.networkGame.netenabled)
+				if (ownerGrd.ownerFrm.game.isNetworkEnabled())
 					ownerGrd.ownerFrm.menuQuickNew_actionPerformed(null);
 			}
 		}
-		ownerGrd.ownerFrm.launcherApp.gameGrid.changeTurn();
+		ownerGrd.ownerFrm.game.gameGrid.changeTurn();
 	}
 }

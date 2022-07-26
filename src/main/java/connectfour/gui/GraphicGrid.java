@@ -83,14 +83,14 @@ public class GraphicGrid extends JPanel {
 	/* procedura di rimozione di un gettone */
 	void removeLast() {
 		/* nella lista delle mosse non viene eliminato */
-		int c = ownerFrm.launcherApp.game.removeLastMove();
+		int c = ownerFrm.game.removeLastMove();
 		column[c].removeLast();
 	}
 
 	/* procedura di inserzione automatica di un gettone */
 	public void loadGrid(int c) {
 		column[c].loadPawn();
-		if (!ownerFrm.launcherApp.networkGame.netenabled) {
+		if (!ownerFrm.game.isNetworkEnabled()) {
 			ownerFrm.menuMoveBack.setEnabled(true);
 			ownerFrm.moveBack.setEnabled(true);
 		}

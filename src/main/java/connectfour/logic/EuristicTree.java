@@ -1,6 +1,5 @@
 package connectfour.logic;
 
-import connectfour.gui.Gui;
 import connectfour.model.Grid;
 import connectfour.model.Level;
 
@@ -31,15 +30,13 @@ public class EuristicTree {
 
 	private EuristicNode start;
 	private Grid configuration;
-	private Gui launcherApp;
 	public EuristicNode chosen;
 
 	/* costruttore di classe inizializza le variabile della classe. */
-	public EuristicTree(Gui launcherApp) {
+	public EuristicTree() {
 		start = null;
 		configuration = null;
 		chosen = new EuristicNode();
-		this.launcherApp = launcherApp;
 	}
 
 	/*
@@ -50,14 +47,15 @@ public class EuristicTree {
 
 	public void build(Grid conf, int player, Level lev) {
 		start = new EuristicNode();
-		configuration = new Grid(launcherApp);
+		configuration = new Grid();
 		configuration.setGrid(conf);
 		EuristicNode temp = new EuristicNode();
 		temp = start;
 		int level = 0;
 		while (temp != null) {
 			boolean sonCreated = false;
-			if (temp.getSon() == null && level < lev.getDifficulty() && !configuration.isWon(temp.getColumn())) {
+			if (temp.getSon() == null && level < lev.getDifficulty()
+					&& !configuration.isWon(temp.getColumn()).isWin()) {
 				int indexColumn = 0;
 				do {
 					int control = configuration.insertMove(indexColumn, player);
@@ -157,7 +155,7 @@ public class EuristicTree {
 		}
 		// FOGLIA
 		else {
-			if (configuration.isWon(tmp.getColumn())) {
+			if (configuration.isWon(tmp.getColumn()).isWin()) {
 				if ((level % 2) > 0)
 					value = 1000;
 				else

@@ -90,9 +90,8 @@ public class MainFrame_NewGameBox extends JDialog {
 		singlePlayer = new JRadioButton();
 		singlePlayer.setFont(new java.awt.Font("Dialog", 0, 11));
 		singlePlayer.setText("Single Player, as:");
-		if ((ownerFrm.launcherApp.game.getPlayer1().isHuman() && !ownerFrm.launcherApp.game.getPlayer2().isHuman())
-				|| (!ownerFrm.launcherApp.game.getPlayer1().isHuman()
-						&& ownerFrm.launcherApp.game.getPlayer2().isHuman())) {
+		if ((ownerFrm.game.getPlayer1().isHuman() && !ownerFrm.game.getPlayer2().isHuman())
+				|| (!ownerFrm.game.getPlayer1().isHuman() && ownerFrm.game.getPlayer2().isHuman())) {
 			singlePlayer.setSelected(true);
 		}
 		singlePlayer.addActionListener(new ActionListener() {
@@ -107,7 +106,7 @@ public class MainFrame_NewGameBox extends JDialog {
 		playerOne.setText("Player 1");
 		if (!singlePlayer.isSelected())
 			playerOne.setEnabled(false);
-		if (ownerFrm.launcherApp.game.getPlayer1().isHuman())
+		if (ownerFrm.game.getPlayer1().isHuman())
 			playerOne.setSelected(true);
 		playerOne.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -121,7 +120,7 @@ public class MainFrame_NewGameBox extends JDialog {
 		playerTwo.setText("Player 2");
 		if (!singlePlayer.isSelected())
 			playerTwo.setEnabled(false);
-		if (ownerFrm.launcherApp.game.getPlayer2().isHuman() && !playerOne.isSelected())
+		if (ownerFrm.game.getPlayer2().isHuman() && !playerOne.isSelected())
 			playerTwo.setSelected(true);
 		playerTwo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -133,7 +132,7 @@ public class MainFrame_NewGameBox extends JDialog {
 		multiPlayer = new JRadioButton();
 		multiPlayer.setFont(new java.awt.Font("Dialog", 0, 11));
 		multiPlayer.setText("Multi Player");
-		if (ownerFrm.launcherApp.game.getPlayer1().isHuman() && ownerFrm.launcherApp.game.getPlayer2().isHuman()) {
+		if (ownerFrm.game.getPlayer1().isHuman() && ownerFrm.game.getPlayer2().isHuman()) {
 			multiPlayer.setSelected(true);
 		}
 		multiPlayer.addActionListener(new ActionListener() {
@@ -148,7 +147,7 @@ public class MainFrame_NewGameBox extends JDialog {
 		network.setText("Network, versus: ");
 		if (!multiPlayer.isSelected())
 			network.setEnabled(false);
-		if (ownerFrm.launcherApp.game.isNetworkGame())
+		if (ownerFrm.game.isNetworkGame())
 			network.setSelected(true);
 		network.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -161,7 +160,7 @@ public class MainFrame_NewGameBox extends JDialog {
 		 */
 		enemyAddress = new JTextField();
 		enemyAddress.setFont(new java.awt.Font("Dialog", 0, 11));
-		enemyAddress.setText(ownerFrm.launcherApp.networkGame.hostName);
+		enemyAddress.setText(ownerFrm.game.getHostname());
 		if (!network.isSelected())
 			enemyAddress.setEnabled(false);
 
@@ -256,7 +255,7 @@ public class MainFrame_NewGameBox extends JDialog {
 	 * ritornando al frame chiamante
 	 */
 	public void cancelButton_actionPerformed(ActionEvent e) {
-		ownerFrm.launcherApp.beginNewMatch = false;
+		ownerFrm.game.setBeginNewMatch(false);
 		dispose();
 	}
 
@@ -269,30 +268,30 @@ public class MainFrame_NewGameBox extends JDialog {
 		/* scelta partita singolo giocatore contro il computer */
 		if (singlePlayer.isSelected()) {
 			if (playerOne.isSelected()) {
-				ownerFrm.launcherApp.game.getPlayer1().setHuman(true);
-				ownerFrm.launcherApp.game.getPlayer2().setHuman(false);
+				ownerFrm.game.getPlayer1().setHuman(true);
+				ownerFrm.game.getPlayer2().setHuman(false);
 			} else {
-				ownerFrm.launcherApp.game.getPlayer1().setHuman(false);
-				ownerFrm.launcherApp.game.getPlayer2().setHuman(true);
+				ownerFrm.game.getPlayer1().setHuman(false);
+				ownerFrm.game.getPlayer2().setHuman(true);
 			}
-			ownerFrm.launcherApp.game.setNetworkGame(false);
+			ownerFrm.game.setNetworkGame(false);
 		}
 
 		/* scelta partita multigiocatore... */
 		else {
-			ownerFrm.launcherApp.game.getPlayer1().setHuman(true);
-			ownerFrm.launcherApp.game.getPlayer2().setHuman(true);
+			ownerFrm.game.getPlayer1().setHuman(true);
+			ownerFrm.game.getPlayer2().setHuman(true);
 			/* ...su un pc */
 			if (!network.isSelected() || !network.isEnabled()) {
-				ownerFrm.launcherApp.game.setNetworkGame(false);
+				ownerFrm.game.setNetworkGame(false);
 			}
 			/* ...in rete */
 			else {
-				ownerFrm.launcherApp.game.setNetworkGame(true);
+				ownerFrm.game.setNetworkGame(true);
 			}
 		}
-		ownerFrm.launcherApp.networkGame.hostName = enemyAddress.getText();
-		ownerFrm.launcherApp.beginNewMatch = true;
+		ownerFrm.game.setHostname(enemyAddress.getText());
+		ownerFrm.game.setBeginNewMatch(true);
 		dispose();
 	}
 

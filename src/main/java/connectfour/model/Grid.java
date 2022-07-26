@@ -32,9 +32,9 @@ public class Grid {
 	Gui launcherApp;
 
 	/*
-	 * giocatore giallo. L'inizializzazione a 1 significa che per regola il
-	 * gioco inizia sempre con una mossa del giocatore giallo, identificato per
-	 * l'appunto dal valore 1.
+	 * giocatore giallo. L'inizializzazione a 1 significa che per regola il gioco
+	 * inizia sempre con una mossa del giocatore giallo, identificato per l'appunto
+	 * dal valore 1.
 	 */
 	public int currentPlayer = 1;
 
@@ -65,12 +65,12 @@ public class Grid {
 	}
 
 	/*
-	 * routine che esegue l'inserimento di una mossa nella griglia di gioco. Ha
-	 * due parametri la colonna in cui inserire la pedina e il giocatore che ha
-	 * effettuato tale mossa. La routine ritorna un'intero che corrisponde alla
-	 * riga in cui � stata inserita la pedina nella colonna prescelta.Se tale
-	 * colonna risulta piena la routine ritorna un valore non valido(-1) e
-	 * l'inserimento non viene eseguito
+	 * routine che esegue l'inserimento di una mossa nella griglia di gioco. Ha due
+	 * parametri la colonna in cui inserire la pedina e il giocatore che ha
+	 * effettuato tale mossa. La routine ritorna un'intero che corrisponde alla riga
+	 * in cui � stata inserita la pedina nella colonna prescelta.Se tale colonna
+	 * risulta piena la routine ritorna un valore non valido(-1) e l'inserimento non
+	 * viene eseguito
 	 */
 
 	public int insertMove(int column, int playerSign) {
@@ -84,11 +84,10 @@ public class Grid {
 	}
 
 	/*
-	 * la routine effettua la rimozione dell'ultima pedina inserita nella
-	 * colonna presa come parametro.In particolare se la colonna prescelta
-	 * risulta vuota non viene effettuata alcuna modifica alla griglia,
-	 * altrimenti si setta la relativa entrata della matrice al valore 0, ossia
-	 * slot libero.
+	 * la routine effettua la rimozione dell'ultima pedina inserita nella colonna
+	 * presa come parametro.In particolare se la colonna prescelta risulta vuota non
+	 * viene effettuata alcuna modifica alla griglia, altrimenti si setta la
+	 * relativa entrata della matrice al valore 0, ossia slot libero.
 	 */
 	public void removeMove(int column) {
 		if (!isEmpty(column)) {
@@ -126,9 +125,9 @@ public class Grid {
 	}
 
 	/*
-	 * la routine verifica la colonna presa in esame � vuota,ritornando in
-	 * questo caso valore true, oppure se tale colonna contiene gi� della
-	 * pedina, ritornando allore false
+	 * la routine verifica la colonna presa in esame � vuota,ritornando in questo
+	 * caso valore true, oppure se tale colonna contiene gi� della pedina,
+	 * ritornando allore false
 	 */
 	public boolean isEmpty(int column) {
 		int counter = 0;
@@ -142,8 +141,8 @@ public class Grid {
 	}
 
 	/*
-	 * la routine verifica se la colonna presa come parametro � piena oppure se
-	 * non lo � ritornando i valori boolenani corrispondenti.
+	 * la routine verifica se la colonna presa come parametro � piena oppure se non
+	 * lo � ritornando i valori boolenani corrispondenti.
 	 */
 	public boolean isFull(int column) {
 		if (grid[0][column] != 0)
@@ -152,8 +151,8 @@ public class Grid {
 	}
 
 	/*
-	 * routine che verifica se all'interno della griglia di gioco tutte le
-	 * colonne sono piene.
+	 * routine che verifica se all'interno della griglia di gioco tutte le colonne
+	 * sono piene.
 	 */
 	public boolean isFull() {
 		for (int i = 0; i < 7; i++)
@@ -168,9 +167,9 @@ public class Grid {
 	 * viene tenuta traccia del tipo di 4 fatto per poterlo animare in seguito.
 	 */
 
-	public boolean isWon(int column) {
+	public Winner isWon(int column) {
 		if (column == -1)
-			return false;
+			return new Winner(false, null, -1, -1);
 		int counter = 0;
 		int row = this.numberRow(column);
 		int playerSign = this.grid[row][column];
@@ -181,9 +180,7 @@ public class Grid {
 			else
 				counter = 0;
 			if (counter >= 4) {
-				launcherApp.frame.graphicGrid.mode = new String("hr");
-				launcherApp.frame.graphicGrid.startC = (j - 3);
-				return true;
+				return new Winner(true, "hr", j - 3, -1);
 			}
 		}
 
@@ -195,9 +192,7 @@ public class Grid {
 			else
 				counter = 0;
 			if (counter >= 4) {
-				launcherApp.frame.graphicGrid.mode = new String("vr");
-				launcherApp.frame.graphicGrid.startC = column;
-				return true;
+				return new Winner(true, "vr", column, -1);
 			}
 		}
 
@@ -214,10 +209,7 @@ public class Grid {
 			else
 				counter = 0;
 			if (counter >= 4) {
-				launcherApp.frame.graphicGrid.mode = new String("dl");
-				launcherApp.frame.graphicGrid.startC = j;
-				launcherApp.frame.graphicGrid.startR = i;
-				return true;
+				return new Winner(true, "dl", j, i);
 			}
 		}
 
@@ -235,20 +227,20 @@ public class Grid {
 			else
 				counter = 0;
 			if (counter >= 4) {
-				launcherApp.frame.graphicGrid.mode = new String("dr");
-				launcherApp.frame.graphicGrid.startC = j;
-				launcherApp.frame.graphicGrid.startR = i;
-				return true;
+				return new Winner(true, "dr", j, i);
 			}
 		}
-		return false;
+		return new Winner(false, null, -1, -1);
+	}
+
+	public static record Winner(boolean isWin, String mode, int startC, int startR) {
+
 	}
 
 	/*
 	 * la routine cambia il turno di gioco dei giocatori sempilicemente
-	 * moltiplicando il valore per -1.Infatti per semplicit� i giocatori
-	 * assumono i valori 1, per quanto riguarda il primo giocatore, e -1 per il
-	 * secondo
+	 * moltiplicando il valore per -1.Infatti per semplicit� i giocatori assumono i
+	 * valori 1, per quanto riguarda il primo giocatore, e -1 per il secondo
 	 */
 	public void changeTurn() {
 		currentPlayer *= -1;
