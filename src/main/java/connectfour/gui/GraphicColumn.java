@@ -30,6 +30,8 @@ import connectfour.model.Grid.Winner;
 
 public class GraphicColumn extends JPanel {
 
+	private static final long serialVersionUID = -4012663836485100299L;
+
 	/* variabili */
 	/* identificatore della colonna */
 	int id;

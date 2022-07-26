@@ -26,6 +26,7 @@ import javax.swing.JPanel;
 
 public class GraphicGrid extends JPanel {
 
+	private static final long serialVersionUID = -166299791939576787L;
 	/* variabili */
 	/* layout del pannello */
 	GridLayout gridLayout;
@@ -99,7 +100,6 @@ public class GraphicGrid extends JPanel {
 	/* procedura di animazione del quattro vincente */
 	void markFour(int r, String gifName) {
 		gifName = "/icons/" + gifName;
-		int counter = 0;
 		/* orizzontale */
 		if (mode.startsWith("hr")) {
 			for (int i = startC; i < (startC + 4); i++) {

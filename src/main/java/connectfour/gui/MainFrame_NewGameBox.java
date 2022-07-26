@@ -34,6 +34,7 @@ import javax.swing.JTextField;
 
 public class MainFrame_NewGameBox extends JDialog {
 
+	private static final long serialVersionUID = 611851780452800134L;
 	/* variabili: il frame owner di questo dialog, le componenti ed i pulsanti */
 	MainFrame ownerFrm;
 	JRadioButton singlePlayer;

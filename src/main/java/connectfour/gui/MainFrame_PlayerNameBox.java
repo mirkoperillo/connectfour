@@ -32,6 +32,7 @@ import javax.swing.JTextField;
 
 public class MainFrame_PlayerNameBox extends JDialog {
 
+	private static final long serialVersionUID = -1732349663926972731L;
 	/* variabili */
 	/* frame owner */
 	MainFrame ownerFrm;

@@ -41,6 +41,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
+import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 
 import connectfour.logic.CfgManager;
@@ -49,6 +50,8 @@ import connectfour.model.Game;
 import connectfour.model.Level;
 
 public class MainFrame extends JFrame {
+
+	private static final long serialVersionUID = 5468281161687521106L;
 
 	ThreadMouse eventAvoider;
 	/* flag che dichiara se la partita e' stata conclusa */
@@ -312,7 +315,7 @@ public class MainFrame extends JFrame {
 		toolBar.setBackground(SystemColor.control);
 		toolBar.setFloatable(false);
 		toolBar.setBorderPainted(false);
-		toolBar.setOrientation(toolBar.HORIZONTAL);
+		toolBar.setOrientation(SwingConstants.HORIZONTAL);
 
 		/* inizializzazione delle icone della toolbar */
 		newGame = new JButton(new ImageIcon(getClass().getResource("/icons/new_disabled.gif")));
@@ -428,8 +431,8 @@ public class MainFrame extends JFrame {
 
 		borderLayout = new BorderLayout(0, 0);
 		contentPane.setLayout(borderLayout);
-		contentPane.add(toolBar, borderLayout.NORTH);
-		contentPane.add(graphicGrid, borderLayout.CENTER);
+		contentPane.add(toolBar, BorderLayout.NORTH);
+		contentPane.add(graphicGrid, BorderLayout.CENTER);
 		contentPane.add(statusBar, BorderLayout.SOUTH);
 
 		/* conclusione dell'inizializzazione (con successo) */
@@ -521,7 +524,7 @@ public class MainFrame extends JFrame {
 		Point loc = getLocation();
 		dlg.setLocation((frmSize.width - dlgSize.width) / 2 + loc.x, (frmSize.height - dlgSize.height) / 2 + loc.y);
 		dlg.pack();
-		dlg.show();
+		dlg.setVisible(true);
 
 		/* se viene premuto il tasto cancel nel dialog torniamo alla partita */
 		if (!game.isBeginNewMatch())
@@ -746,7 +749,7 @@ public class MainFrame extends JFrame {
 		Dimension frmSize = getSize();
 		Point loc = getLocation();
 		dlg.setLocation((frmSize.width - dlgSize.width) / 2 + loc.x, (frmSize.height - dlgSize.height) / 2 + loc.y);
-		dlg.show();
+		dlg.setVisible(true);
 	}
 
 	/* attivazione ?>About */
@@ -757,7 +760,7 @@ public class MainFrame extends JFrame {
 		Point loc = getLocation();
 		dlg.setLocation((frmSize.width - dlgSize.width) / 2 + loc.x, (frmSize.height - dlgSize.height) / 2 + loc.y);
 		dlg.setModal(true);
-		dlg.show();
+		dlg.setVisible(true);
 	}
 
 	/* attivazione di ?>Help */
@@ -790,6 +793,6 @@ public class MainFrame extends JFrame {
 		Point loc = getLocation();
 		dlg.setLocation((frmSize.width - dlgSize.width) / 2 + loc.x, (frmSize.height - dlgSize.height) / 2 + loc.y);
 		dlg.setModal(true);
-		dlg.show();
+		dlg.setVisible(true);
 	}
 }

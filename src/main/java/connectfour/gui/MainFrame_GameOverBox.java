@@ -35,6 +35,7 @@ import javax.swing.JPanel;
 
 public class MainFrame_GameOverBox extends JDialog implements ActionListener {
 
+	private static final long serialVersionUID = 1312347435081825616L;
 	/* variabili */
 	JButton OkButton = new JButton();
 	JLabel message;

@@ -12,10 +12,6 @@ public class Gui {
 
 	public Game game;
 
-	/* variabili per la gestione di rete */
-
-	// NetworkManager networkGame;
-
 	private CfgManager cfgManager;
 
 	public Gui() {

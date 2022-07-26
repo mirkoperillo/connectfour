@@ -34,12 +34,14 @@ import javax.swing.JPanel;
 
 public class MainFrame_AboutBox extends JDialog implements ActionListener {
 
+	private static final long serialVersionUID = 6416164577449929939L;
+
 	/* variabili */
 	JButton button1 = new JButton();
 
 	String product = "Connect Four";
 	String version = "Software Version 2.0";
-	String copyright = "Copyright (c) 2003";
+	String copyright = "Copyright (c) 2003-2022";
 	String comments = "Zolet & Perillo";
 
 	/* costruttore parametrico */
@@ -125,10 +127,9 @@ public class MainFrame_AboutBox extends JDialog implements ActionListener {
 	}
 
 	/*
-	 * chiusura della finestra premendo la X equivale a premere ok protected
-	 * void processWindowEvent(WindowEvent e) { if (e.getID() ==
-	 * WindowEvent.WINDOW_CLOSING) { dispose(); } super.processWindowEvent(e);
-	 * }/*
+	 * chiusura della finestra premendo la X equivale a premere ok protected void
+	 * processWindowEvent(WindowEvent e) { if (e.getID() ==
+	 * WindowEvent.WINDOW_CLOSING) { dispose(); } super.processWindowEvent(e); }/*
 	 * 
 	 * /*pulsante ok chiude il dialog
 	 */
