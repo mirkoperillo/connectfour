@@ -1,4 +1,4 @@
-package connectfour.gui;
+package connectfour.gui.dialogs;
 
 /*
 
@@ -32,7 +32,7 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class MainFrame_AboutBox extends JDialog implements ActionListener {
+public class AboutDialog extends JDialog implements ActionListener {
 
 	private static final long serialVersionUID = 6416164577449929939L;
 
@@ -45,7 +45,7 @@ public class MainFrame_AboutBox extends JDialog implements ActionListener {
 	String comments = "Zolet & Perillo";
 
 	/* costruttore parametrico */
-	public MainFrame_AboutBox(Frame parent) {
+	public AboutDialog(Frame parent) {
 		super(parent);
 		enableEvents(AWTEvent.WINDOW_EVENT_MASK);
 		try {

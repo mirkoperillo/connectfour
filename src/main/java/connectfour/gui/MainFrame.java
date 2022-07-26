@@ -44,6 +44,10 @@ import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 
+import connectfour.gui.dialogs.AboutDialog;
+import connectfour.gui.dialogs.GameOverDialog;
+import connectfour.gui.dialogs.NewGameDialog;
+import connectfour.gui.dialogs.PlayerNameDialog;
 import connectfour.logic.CfgManager;
 import connectfour.logic.EuristicTree;
 import connectfour.model.Game;
@@ -65,7 +69,7 @@ public class MainFrame extends JFrame {
 
 	/* l'applicazione che ha aperto il frame */
 	// Gui launcherApp;
-	Game game;
+	public Game game;
 
 	/* dichiarazione dei pannelli che costituiscono la finestra principale */
 	JPanel contentPane;
@@ -518,7 +522,7 @@ public class MainFrame extends JFrame {
 	/* attivazione di Game>New, apertura di una nuova partita con dialog */
 	public void menuGameNew_actionPerformed(ActionEvent e) {
 		/* apertura del dialog con le impostazioni di gioco */
-		MainFrame_NewGameBox dlg = new MainFrame_NewGameBox((JFrame) this, "", true);
+		NewGameDialog dlg = new NewGameDialog((JFrame) this, "", true);
 		Dimension dlgSize = dlg.getPreferredSize();
 		Dimension frmSize = getSize();
 		Point loc = getLocation();
@@ -744,7 +748,7 @@ public class MainFrame extends JFrame {
 
 	/* attivazione Settings>Playername */
 	public void menuSettingsPlayername_actionPerformed(ActionEvent e) {
-		MainFrame_PlayerNameBox dlg = new MainFrame_PlayerNameBox(this, "Players' names", true);
+		PlayerNameDialog dlg = new PlayerNameDialog(this, "Players' names", true);
 		Dimension dlgSize = dlg.getPreferredSize();
 		Dimension frmSize = getSize();
 		Point loc = getLocation();
@@ -754,7 +758,7 @@ public class MainFrame extends JFrame {
 
 	/* attivazione ?>About */
 	public void menuHelpAbout_actionPerformed(ActionEvent e) {
-		MainFrame_AboutBox dlg = new MainFrame_AboutBox(this);
+		AboutDialog dlg = new AboutDialog(this);
 		Dimension dlgSize = dlg.getPreferredSize();
 		Dimension frmSize = getSize();
 		Point loc = getLocation();
@@ -787,7 +791,7 @@ public class MainFrame extends JFrame {
 
 	/* creazione messaggio di vittoria o sconfitta */
 	void gameOver(String msg) {
-		MainFrame_GameOverBox dlg = new MainFrame_GameOverBox(this, msg);
+		GameOverDialog dlg = new GameOverDialog(this, msg);
 		Dimension dlgSize = dlg.getPreferredSize();
 		Dimension frmSize = getSize();
 		Point loc = getLocation();

@@ -1,4 +1,4 @@
-package connectfour.gui;
+package connectfour.gui.dialogs;
 
 /*
 
@@ -33,7 +33,7 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class MainFrame_GameOverBox extends JDialog implements ActionListener {
+public class GameOverDialog extends JDialog implements ActionListener {
 
 	private static final long serialVersionUID = 1312347435081825616L;
 	/* variabili */
@@ -42,7 +42,7 @@ public class MainFrame_GameOverBox extends JDialog implements ActionListener {
 
 	/* metodi */
 	/* costruttore */
-	public MainFrame_GameOverBox(Frame parent, String msg) {
+	public GameOverDialog(Frame parent, String msg) {
 		super(parent);
 		/* il messaggio di game over */
 		message = new JLabel(msg);

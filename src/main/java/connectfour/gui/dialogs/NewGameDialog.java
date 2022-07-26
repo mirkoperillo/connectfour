@@ -1,4 +1,4 @@
-package connectfour.gui;
+package connectfour.gui.dialogs;
 
 /*
 
@@ -32,7 +32,9 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
-public class MainFrame_NewGameBox extends JDialog {
+import connectfour.gui.MainFrame;
+
+public class NewGameDialog extends JDialog {
 
 	private static final long serialVersionUID = 611851780452800134L;
 	/* variabili: il frame owner di questo dialog, le componenti ed i pulsanti */
@@ -48,7 +50,7 @@ public class MainFrame_NewGameBox extends JDialog {
 
 	/* metodi */
 	/* costruttore parametrico */
-	public MainFrame_NewGameBox(JFrame frame, String title, boolean modal) {
+	public NewGameDialog(JFrame frame, String title, boolean modal) {
 		super(frame, title, modal);
 		ownerFrm = (MainFrame) frame;
 		try {

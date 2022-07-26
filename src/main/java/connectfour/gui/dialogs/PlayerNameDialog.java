@@ -1,4 +1,4 @@
-package connectfour.gui;
+package connectfour.gui.dialogs;
 
 /*
 
@@ -30,7 +30,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class MainFrame_PlayerNameBox extends JDialog {
+import connectfour.gui.MainFrame;
+
+public class PlayerNameDialog extends JDialog {
 
 	private static final long serialVersionUID = -1732349663926972731L;
 	/* variabili */
@@ -51,7 +53,7 @@ public class MainFrame_PlayerNameBox extends JDialog {
 
 	/* metodi */
 	/* costruttore parametrico */
-	public MainFrame_PlayerNameBox(JFrame frame, String title, boolean modal) {
+	public PlayerNameDialog(JFrame frame, String title, boolean modal) {
 		super(frame, title, modal);
 		ownerFrm = (MainFrame) frame;
 		try {
