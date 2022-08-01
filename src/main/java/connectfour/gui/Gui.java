@@ -32,4 +32,8 @@ public class Gui {
 		window = new MainFrame(game);
 	}
 
+	public void render() {
+		window.render();
+	}
+
 }

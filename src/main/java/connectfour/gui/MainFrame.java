@@ -130,12 +130,7 @@ public class MainFrame extends JFrame {
 			if (frameSize.width > screenSize.width)
 				frameSize.width = screenSize.width;
 			setLocation((screenSize.width - frameSize.width) / 2, (screenSize.height - frameSize.height) / 2);
-
-			/* il frame non � ridimensionabile */
 			setResizable(false);
-
-			/* il frame � sempre visualizzato */
-			setVisible(true);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -802,6 +797,10 @@ public class MainFrame extends JFrame {
 		dlg.setLocation((frmSize.width - dlgSize.width) / 2 + loc.x, (frmSize.height - dlgSize.height) / 2 + loc.y);
 		dlg.setModal(true);
 		dlg.setVisible(true);
+	}
+
+	public void render() {
+		setVisible(true);
 	}
 
 }
