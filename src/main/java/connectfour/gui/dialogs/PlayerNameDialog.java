@@ -30,14 +30,14 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import connectfour.gui.MainFrame;
+import connectfour.gui.ApplicationWindow;
 
 public class PlayerNameDialog extends JDialog {
 
 	private static final long serialVersionUID = -1732349663926972731L;
 	/* variabili */
 	/* frame owner */
-	MainFrame ownerFrm;
+	ApplicationWindow ownerFrm;
 	/* layout del dialog */
 	GridLayout gridLayout = new GridLayout(3, 2);
 	JLabel name1 = new JLabel();
@@ -55,7 +55,7 @@ public class PlayerNameDialog extends JDialog {
 	/* costruttore parametrico */
 	public PlayerNameDialog(JFrame frame, String title, boolean modal) {
 		super(frame, title, modal);
-		ownerFrm = (MainFrame) frame;
+		ownerFrm = (ApplicationWindow) frame;
 		try {
 			init();
 			pack();

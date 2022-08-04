@@ -32,13 +32,13 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
-import connectfour.gui.MainFrame;
+import connectfour.gui.ApplicationWindow;
 
 public class NewGameDialog extends JDialog {
 
 	private static final long serialVersionUID = 611851780452800134L;
 	/* variabili: il frame owner di questo dialog, le componenti ed i pulsanti */
-	MainFrame ownerFrm;
+	ApplicationWindow ownerFrm;
 	JRadioButton singlePlayer;
 	JRadioButton multiPlayer;
 	JRadioButton playerOne;
@@ -52,7 +52,7 @@ public class NewGameDialog extends JDialog {
 	/* costruttore parametrico */
 	public NewGameDialog(JFrame frame, String title, boolean modal) {
 		super(frame, title, modal);
-		ownerFrm = (MainFrame) frame;
+		ownerFrm = (ApplicationWindow) frame;
 		try {
 			init();
 			pack();

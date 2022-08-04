@@ -27,8 +27,6 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
-import java.io.File;
-import java.io.IOException;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -36,24 +34,19 @@ import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 
-import connectfour.gui.dialogs.AboutDialog;
 import connectfour.gui.dialogs.GameOverDialog;
 import connectfour.gui.dialogs.NewGameDialog;
-import connectfour.gui.dialogs.PlayerNameDialog;
 import connectfour.logic.CfgManager;
 import connectfour.logic.EuristicTree;
 import connectfour.model.Game;
 import connectfour.model.Level;
 
-public class MainFrame extends JFrame {
+public class ApplicationWindow extends JFrame {
 
 	private static final long serialVersionUID = 5468281161687521106L;
 
@@ -68,7 +61,6 @@ public class MainFrame extends JFrame {
 	public boolean removing = false;
 
 	/* l'applicazione che ha aperto il frame */
-	// Gui launcherApp;
 	public Game game;
 
 	/* dichiarazione dei pannelli che costituiscono la finestra principale */
@@ -77,22 +69,10 @@ public class MainFrame extends JFrame {
 	private BorderLayout borderLayout;
 
 	/* dichiarazione della barra di menu e dei relativi sottomenu */
-	private JMenuBar menuBar;
-	private JMenu menuGame;
-	private JMenuItem menuGameNew;
-	private JMenuItem menuGameQuit;
-	private JMenu menuMove;
-	public JMenuItem menuMoveBack;
-	public JMenuItem menuMovePlay;
-	public JMenuItem menuMoveForward;
-	private JMenu menuSettings;
-	private JMenu menuSettingsLevel;
-	private JCheckBoxMenuItem menuSettingsLevelNormal;
-	private JCheckBoxMenuItem menuSettingsLevelHard;
-	private JMenuItem menuSettingsPlayername;
-	private JMenu menuHelp;
-	private JMenuItem menuHelpAbout;
-	private JMenuItem menuHelpHelp;
+	private MenuBar menuBar;
+
+	public JCheckBoxMenuItem menuSettingsLevelNormal;
+	public JCheckBoxMenuItem menuSettingsLevelHard;
 
 	/* dichiarazione della toolbar e delle relative icone */
 	private JToolBar toolBar;
@@ -107,7 +87,7 @@ public class MainFrame extends JFrame {
 	 */
 	private JLabel statusBar = new JLabel(" ");
 
-	public MainFrame(Game game) {
+	public ApplicationWindow(Game game) {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) {
@@ -148,165 +128,42 @@ public class MainFrame extends JFrame {
 		statusBar.setBackground(SystemColor.control);
 
 		/* inizializzazione della barra di menu */
-		menuBar = new JMenuBar();
-		menuBar.setBackground(SystemColor.control);
-		menuBar.setFont(new java.awt.Font("Dialog", 0, 11));
+		menuBar = new MenuBar(this);// JMenuBar();
 
-		/* costruzione del menu Game */
-		menuGame = new JMenu();
-		menuGame.setBackground(SystemColor.control);
-		menuGame.setFont(new java.awt.Font("Dialog", 0, 11));
-		menuGame.setText("Game");
-
-		/* costruzione del menu Game, voce New */
-		menuGameNew = new JMenuItem();
-		menuGameNew.setBackground(SystemColor.control);
-		menuGameNew.setFont(new java.awt.Font("Dialog", 0, 11));
-		menuGameNew.setText("New");
-		menuGameNew.setAccelerator(javax.swing.KeyStroke.getKeyStroke(113, 0, false));
-		menuGameNew.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				menuGameNew_actionPerformed(e);
-			}
-		});
-
-		/* costruzione del menu Game, voce Quit */
-		menuGameQuit = new JMenuItem();
-		menuGameQuit.setBackground(SystemColor.control);
-		menuGameQuit.setFont(new java.awt.Font("Dialog", 0, 11));
-		menuGameQuit.setText("Quit");
-		menuGameQuit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(81, java.awt.event.KeyEvent.ALT_MASK, false));
-		menuGameQuit.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					menuGameQuit_actionPerformed(e);
-				} catch (Exception ex) {
-					ex.printStackTrace();
-				}
-			}
-		});
-
-		/* costruzione del menu Move */
-		menuMove = new JMenu();
-		menuMove.setBackground(SystemColor.control);
-		menuMove.setFont(new java.awt.Font("Dialog", 0, 11));
-		menuMove.setText("Move");
-
-		/* costruzione del menu Move, voce Back */
-		menuMoveBack = new JMenuItem();
-		menuMoveBack.setBackground(SystemColor.control);
-		menuMoveBack.setFont(new java.awt.Font("Dialog", 0, 11));
-		menuMoveBack.setText("Back");
-		menuMoveBack.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				menuMoveBack_actionPerformed(e);
-			}
-		});
-		menuMoveBack.setEnabled(false);
-
-		/* costruzione del menu Move, voce Play */
-		menuMovePlay = new JMenuItem();
-		menuMovePlay.setBackground(SystemColor.control);
-		menuMovePlay.setFont(new java.awt.Font("Dialog", 0, 11));
-		menuMovePlay.setText("Play");
-		menuMovePlay.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				menuMovePlay_actionPerformed(e);
-			}
-		});
-
-		/* costruzione del menu Move, voce Forward */
-		menuMoveForward = new JMenuItem();
-		menuMoveForward.setBackground(SystemColor.control);
-		menuMoveForward.setFont(new java.awt.Font("Dialog", 0, 11));
-		menuMoveForward.setText("Forward");
-		menuMoveForward.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				menuMoveForward_actionPerformed(e);
-			}
-		});
-		menuMoveForward.setEnabled(false);
-
-		/* costruzione del menu, voce Settings */
-		menuSettings = new JMenu();
-		menuSettings.setBackground(SystemColor.control);
-		menuSettings.setFont(new java.awt.Font("Dialog", 0, 11));
-		menuSettings.setText("Settings");
-
-		/* costruzione del menu Settings, voce Level */
-		menuSettingsLevel = new JMenu();
-		menuSettingsLevel.setBackground(SystemColor.control);
-		menuSettingsLevel.setFont(new java.awt.Font("Dialog", 0, 11));
-		menuSettingsLevel.setText("Level");
-
-		/* costruzione del menu Level, voce Normal */
-		menuSettingsLevelNormal = new JCheckBoxMenuItem();
-		menuSettingsLevelNormal.setBackground(SystemColor.control);
-		menuSettingsLevelNormal.setFont(new java.awt.Font("Dialog", 0, 11));
-		menuSettingsLevelNormal.setText("Normal");
-		menuSettingsLevelNormal.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				menuSettingsLevelNormal_actionPerformed(e);
-			}
-		});
-
-		/* costruzione del sottomenu Level, voce Hard */
-		menuSettingsLevelHard = new JCheckBoxMenuItem();
-		menuSettingsLevelHard.setBackground(SystemColor.control);
-		menuSettingsLevelHard.setFont(new java.awt.Font("Dialog", 0, 11));
-		menuSettingsLevelHard.setText("Hard");
-		menuSettingsLevelHard.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				menuSettingsLevelHard_actionPerformed(e);
-			}
-		});
-		if (game.getLevel() == Level.HARD) {
-			menuSettingsLevelNormal.setState(false);
-			menuSettingsLevelHard.setState(true);
-		} else {
-			menuSettingsLevelNormal.setState(true);
-			menuSettingsLevelHard.setState(false);
-		}
-
-		/* costruzione del menu Settings, voce Playername */
-		menuSettingsPlayername = new JMenuItem();
-		menuSettingsPlayername.setBackground(SystemColor.control);
-		menuSettingsPlayername.setFont(new java.awt.Font("Dialog", 0, 11));
-		menuSettingsPlayername.setText("Player name");
-		menuSettingsPlayername.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				menuSettingsPlayername_actionPerformed(e);
-			}
-		});
-
-		/* costruzione del menu ? */
-		menuHelp = new JMenu();
-		menuHelp.setBackground(SystemColor.control);
-		menuHelp.setFont(new java.awt.Font("Dialog", 0, 11));
-		menuHelp.setText("?");
-
-		/* costruzione del menu ?, voce About */
-		menuHelpAbout = new JMenuItem();
-		menuHelpAbout.setBackground(SystemColor.control);
-		menuHelpAbout.setFont(new java.awt.Font("Dialog", 0, 11));
-		menuHelpAbout.setText("About");
-		menuHelpAbout.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				menuHelpAbout_actionPerformed(e);
-			}
-		});
-
-		/* costruzione del menu ?, voce Help */
-		menuHelpHelp = new JMenuItem();
-		menuHelpHelp.setBackground(SystemColor.control);
-		menuHelpHelp.setFont(new java.awt.Font("Dialog", 0, 11));
-		menuHelpHelp.setText("Help");
-		menuHelpHelp.setAccelerator(javax.swing.KeyStroke.getKeyStroke(112, 0, false));
-		menuHelpHelp.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				menuHelpHelp_actionPerformed(e);
-			}
-		});
+//		/* costruzione del menu Move, voce Back */
+//		menuMoveBack = new JMenuItem();
+//		menuMoveBack.setBackground(SystemColor.control);
+//		menuMoveBack.setFont(new java.awt.Font("Dialog", 0, 11));
+//		menuMoveBack.setText("Back");
+//		menuMoveBack.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent e) {
+//				menuMoveBack_actionPerformed(e);
+//			}
+//		});
+//		menuMoveBack.setEnabled(false);
+//
+//		/* costruzione del menu Move, voce Play */
+//		menuMovePlay = new JMenuItem();
+//		menuMovePlay.setBackground(SystemColor.control);
+//		menuMovePlay.setFont(new java.awt.Font("Dialog", 0, 11));
+//		menuMovePlay.setText("Play");
+//		menuMovePlay.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent e) {
+//				menuMovePlay_actionPerformed(e);
+//			}
+//		});
+//
+//		/* costruzione del menu Move, voce Forward */
+//		menuMoveForward = new JMenuItem();
+//		menuMoveForward.setBackground(SystemColor.control);
+//		menuMoveForward.setFont(new java.awt.Font("Dialog", 0, 11));
+//		menuMoveForward.setText("Forward");
+//		menuMoveForward.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent e) {
+//				menuMoveForward_actionPerformed(e);
+//			}
+//		});
+//		menuMoveForward.setEnabled(false);
 
 		/* inizializzazione della toolbar */
 		toolBar = new JToolBar();
@@ -343,7 +200,7 @@ public class MainFrame extends JFrame {
 		moveBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					menuMoveBack_actionPerformed(e);
+					moveBack();
 				} catch (Exception ex) {
 					ex.printStackTrace();
 				}
@@ -361,7 +218,7 @@ public class MainFrame extends JFrame {
 		playHint.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					menuMovePlay_actionPerformed(e);
+					play();
 				} catch (Exception ex) {
 					ex.printStackTrace();
 				}
@@ -378,7 +235,7 @@ public class MainFrame extends JFrame {
 		moveForward.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					menuMoveForward_actionPerformed(e);
+					moveForward();
 				} catch (Exception ex) {
 					ex.printStackTrace();
 				}
@@ -388,23 +245,6 @@ public class MainFrame extends JFrame {
 
 		contentPane = (JPanel) this.getContentPane();
 
-		/* assemblaggio dei menu */
-		menuGame.add(menuGameNew);
-		menuGame.addSeparator();
-		menuGame.add(menuGameQuit);
-		menuBar.add(menuGame);
-		menuMove.add(menuMoveBack);
-		menuMove.add(menuMovePlay);
-		menuMove.add(menuMoveForward);
-		menuBar.add(menuMove);
-		menuSettings.add(menuSettingsPlayername);
-		menuSettingsLevel.add(menuSettingsLevelNormal);
-		menuSettingsLevel.add(menuSettingsLevelHard);
-		menuSettings.add(menuSettingsLevel);
-		menuBar.add(menuSettings);
-		menuBar.add(menuHelp);
-		menuHelp.add(menuHelpAbout);
-		menuHelp.add(menuHelpHelp);
 		this.setJMenuBar(menuBar);
 
 		/* assemblaggio della toolbar */
@@ -440,13 +280,13 @@ public class MainFrame extends JFrame {
 			loadGame();
 			/* se tocca al giocatore 1 che � computer, gioca */
 			if (game.gameGrid.currentPlayer > 0 && !game.getPlayer1().isHuman())
-				this.menuMovePlay_actionPerformed(null);
+				play();
 			else if (game.gameGrid.currentPlayer < 0 && !game.getPlayer2().isHuman())
-				this.menuMovePlay_actionPerformed(null);
+				play();
 		} else {
 			/* se il primo giocatore � il computer, gioca la sua mossa */
 			if (!game.getPlayer1().isHuman() && !game.isNetworkEnabled())
-				this.menuMovePlay_actionPerformed(null);
+				play();
 		}
 	}
 
@@ -496,9 +336,9 @@ public class MainFrame extends JFrame {
 
 		/* servizi disabilitati in modalita' rete */
 		if (!game.isNetworkEnabled()) {
-			menuMoveBack.setEnabled(false);
-			menuMovePlay.setEnabled(true);
-			menuMoveForward.setEnabled(false);
+			menuBar.disableMoveBack();
+			menuBar.enablePlay();
+			menuBar.disableMoveForward();
 			playHint.setEnabled(true);
 			moveForward.setEnabled(false);
 		}
@@ -514,7 +354,7 @@ public class MainFrame extends JFrame {
 
 		/* se tocca al computer, esso gioca la propria mossa */
 		if (!game.getPlayer1().isHuman()) {
-			this.menuMovePlay_actionPerformed(null);
+			play();
 		}
 	}
 
@@ -546,9 +386,9 @@ public class MainFrame extends JFrame {
 		graphicGrid.updateUI();
 		if (!game.isNetworkGame()) {
 			newGame.setEnabled(true);
-			menuMoveBack.setEnabled(false);
-			menuMovePlay.setEnabled(true);
-			menuMoveForward.setEnabled(false);
+			menuBar.disableMoveBack();
+			menuBar.enablePlay();
+			menuBar.disableMoveForward();
 			playHint.setEnabled(true);
 			moveForward.setEnabled(false);
 		}
@@ -601,7 +441,7 @@ public class MainFrame extends JFrame {
 		}
 		/* se il computer � il primo a dover giocare, lo fa */
 		if (!game.getPlayer1().isHuman() && !game.isNetworkGame()) {
-			this.menuMovePlay_actionPerformed(null);
+			play();
 		}
 	}
 
@@ -615,7 +455,123 @@ public class MainFrame extends JFrame {
 	}
 
 	/* attivazione di Move>Back */
-	public void menuMoveBack_actionPerformed(ActionEvent e) {
+//	public void menuMoveBack_actionPerformed(ActionEvent e) {
+//		/* se la griglia non e' vuota possiamo togliere l'ultimo gettone */
+//		if (game.getMarker() > 0) {
+//			removing = true;
+//			/* se prima la partita era finita puo' essere rigiocata */
+//			gameOver = false;
+//			/*
+//			 * se la partita e' contro un pc, torna indietro fino alla nostra mossa
+//			 * precedente, ossia di due mosse; altrimenti di una
+//			 */
+//			if (game.gameGrid.currentPlayer > 0) {
+//				if (!game.getPlayer2().isHuman() && game.getPlayer1().isHuman()) {
+//					if (game.getMarker() >= 2) {
+//						graphicGrid.removeLast();
+//						graphicGrid.removeLast();
+//					}
+//				} else
+//					graphicGrid.removeLast();
+//			}
+//			/* la stessa cosa per il giocatore 2 */
+//			else {
+//				if (game.getPlayer2().isHuman() && !game.getPlayer1().isHuman()) {
+//					if (game.getMarker() >= 2) {
+//						graphicGrid.removeLast();
+//						graphicGrid.removeLast();
+//					}
+//				} else
+//					graphicGrid.removeLast();
+//			}
+//		}
+//		/* dalla griglia vuota non e' possibile tornare indietro */
+//		if (game.getMarker() <= 0) {
+//			menuMoveBack.setEnabled(false);
+//			moveBack.setEnabled(false);
+//		} else {
+//			menuMoveBack.setEnabled(true);
+//			moveBack.setEnabled(true);
+//		}
+//		menuMoveForward.setEnabled(true);
+//		menuMovePlay.setEnabled(true);
+//		moveForward.setEnabled(true);
+//		playHint.setEnabled(true);
+//	}
+//
+//	/* attivazione di Move>Play */
+//	public void menuMovePlay_actionPerformed(ActionEvent e) {
+//		/*
+//		 * se la partita e' ancora aperta, si crea l'albero delle scelte, quindi si fa
+//		 * scegliere la mossa all'intelligenza artificiale
+//		 */
+//		if (!gameOver) {
+//			EuristicTree tmpTree = new EuristicTree();
+//			tmpTree.build(game.gameGrid, game.gameGrid.currentPlayer, game.getLevel());
+//			int toPlay = tmpTree.play(game.gameGrid.currentPlayer);
+//			graphicGrid.loadGrid(toPlay);
+//			game.nextMove(toPlay);
+//			if (game.gameGrid.currentPlayer > 0) {
+//				if (!game.getPlayer1().isHuman() && game.getPlayer2().isHuman()) {
+//					menuMovePlay_actionPerformed(null);
+//				}
+//			} else {
+//				if (!game.getPlayer2().isHuman() && game.getPlayer1().isHuman()) {
+//					menuMovePlay_actionPerformed(null);
+//				}
+//			}
+//		}
+//
+//		/* se la partita non e' terminata la funzione e' abilitata */
+//		if (game.getMarker() < 42) {
+//			if (game.getMoves()[game.getMarker()] == -1)
+//				if (e == null) {
+//					menuMoveForward.setEnabled(false);
+//					moveForward.setEnabled(false);
+//				}
+//		} else {
+//			menuMoveForward.setEnabled(false);
+//			menuMovePlay.setEnabled(false);
+//			moveForward.setEnabled(false);
+//			playHint.setEnabled(false);
+//		}
+//	}
+//
+//	/* attivazione di Move>Forward */
+//	public void menuMoveForward_actionPerformed(ActionEvent e) {
+//		/*
+//		 * la funzionalita' avanti viene abilitata quando si torna indietro; si
+//		 * disabilita in rete sempre, a fine partita, o quando viene fatta
+//		 * un'inserzione. Se il computer ha gia' giocato, si reinseriscono due gettoni.
+//		 */
+//		if (game.getMoves()[game.getMarker()] != -1) {
+//			graphicGrid.loadGrid(game.lastMove());
+//		}
+//
+//		if (game.gameGrid.currentPlayer > 0) {
+//			if (!game.getPlayer1().isHuman() && game.getPlayer2().isHuman()) {
+//				menuMovePlay_actionPerformed(null);
+//			}
+//		} else {
+//			if (!game.getPlayer2().isHuman() && game.getPlayer1().isHuman()) {
+//				menuMovePlay_actionPerformed(null);
+//			}
+//		}
+//
+//		if (game.getMarker() < 41) {
+//			if (game.getMoves()[game.getMarker()] == -1) {
+//				menuMoveForward.setEnabled(false);
+//				moveForward.setEnabled(false);
+//			}
+//		} else {
+//			menuMoveForward.setEnabled(false);
+//			menuMovePlay.setEnabled(false);
+//			moveForward.setEnabled(false);
+//			playHint.setEnabled(false);
+//		}
+//	}
+
+	public void moveBack() {
 		/* se la griglia non e' vuota possiamo togliere l'ultimo gettone */
 		if (game.getMarker() > 0) {
 			removing = true;
@@ -647,58 +603,19 @@ public class MainFrame extends JFrame {
 		}
 		/* dalla griglia vuota non e' possibile tornare indietro */
 		if (game.getMarker() <= 0) {
-			menuMoveBack.setEnabled(false);
+			menuBar.disableMoveBack();
 			moveBack.setEnabled(false);
 		} else {
-			menuMoveBack.setEnabled(true);
+			menuBar.enableMoveBack();
 			moveBack.setEnabled(true);
 		}
-		menuMoveForward.setEnabled(true);
-		menuMovePlay.setEnabled(true);
+		menuBar.enableMoveForward();
+		menuBar.enablePlay();
 		moveForward.setEnabled(true);
 		playHint.setEnabled(true);
 	}
 
-	/* attivazione di Move>Play */
-	public void menuMovePlay_actionPerformed(ActionEvent e) {
-		/*
-		 * se la partita e' ancora aperta, si crea l'albero delle scelte, quindi si fa
-		 * scegliere la mossa all'intelligenza artificiale
-		 */
-		if (!gameOver) {
-			EuristicTree tmpTree = new EuristicTree();
-			tmpTree.build(game.gameGrid, game.gameGrid.currentPlayer, game.getLevel());
-			int toPlay = tmpTree.play(game.gameGrid.currentPlayer);
-			graphicGrid.loadGrid(toPlay);
-			game.nextMove(toPlay);
-			if (game.gameGrid.currentPlayer > 0) {
-				if (!game.getPlayer1().isHuman() && game.getPlayer2().isHuman()) {
-					menuMovePlay_actionPerformed(null);
-				}
-			} else {
-				if (!game.getPlayer2().isHuman() && game.getPlayer1().isHuman()) {
-					menuMovePlay_actionPerformed(null);
-				}
-			}
-		}
-
-		/* se la partita non e' terminata la funzione e' abilitata */
-		if (game.getMarker() < 42) {
-			if (game.getMoves()[game.getMarker()] == -1)
-				if (e == null) {
-					menuMoveForward.setEnabled(false);
-					moveForward.setEnabled(false);
-				}
-		} else {
-			menuMoveForward.setEnabled(false);
-			menuMovePlay.setEnabled(false);
-			moveForward.setEnabled(false);
-			playHint.setEnabled(false);
-		}
-	}
-
-	/* attivazione di Move>Forward */
-	public void menuMoveForward_actionPerformed(ActionEvent e) {
+	public void moveForward() {
 		/*
 		 * la funzionalita' avanti viene abilitata quando si torna indietro; si
 		 * disabilita in rete sempre, a fine partita, o quando viene fatta
@@ -710,70 +627,24 @@ public class MainFrame extends JFrame {
 
 		if (game.gameGrid.currentPlayer > 0) {
 			if (!game.getPlayer1().isHuman() && game.getPlayer2().isHuman()) {
-				menuMovePlay_actionPerformed(null);
+				play();
 			}
 		} else {
 			if (!game.getPlayer2().isHuman() && game.getPlayer1().isHuman()) {
-				menuMovePlay_actionPerformed(null);
+				play();
 			}
 		}
 
 		if (game.getMarker() < 41) {
 			if (game.getMoves()[game.getMarker()] == -1) {
-				menuMoveForward.setEnabled(false);
+				menuBar.disableMoveForward();
 				moveForward.setEnabled(false);
 			}
 		} else {
-			menuMoveForward.setEnabled(false);
-			menuMovePlay.setEnabled(false);
+			menuBar.disableMoveForward();
+			menuBar.disablePlay();
 			moveForward.setEnabled(false);
 			playHint.setEnabled(false);
-		}
-	}
-
-	/* attivazione Settings>Level>Normal */
-	public void menuSettingsLevelNormal_actionPerformed(ActionEvent e) {
-		menuSettingsLevelNormal.setState(true);
-		menuSettingsLevelHard.setState(false);
-		game.setLevel(Level.NORMAL);
-	}
-
-	/* attivazione Settings>Level>Normal */
-	public void menuSettingsLevelHard_actionPerformed(ActionEvent e) {
-		menuSettingsLevelNormal.setState(false);
-		menuSettingsLevelHard.setState(true);
-		game.setLevel(Level.HARD);
-	}
-
-	/* attivazione Settings>Playername */
-	public void menuSettingsPlayername_actionPerformed(ActionEvent e) {
-		PlayerNameDialog dlg = new PlayerNameDialog(this, "Players' names", true);
-		Dimension dlgSize = dlg.getPreferredSize();
-		Dimension frmSize = getSize();
-		Point loc = getLocation();
-		dlg.setLocation((frmSize.width - dlgSize.width) / 2 + loc.x, (frmSize.height - dlgSize.height) / 2 + loc.y);
-		dlg.setVisible(true);
-	}
-
-	/* attivazione ?>About */
-	public void menuHelpAbout_actionPerformed(ActionEvent e) {
-		AboutDialog dlg = new AboutDialog(this);
-		Dimension dlgSize = dlg.getPreferredSize();
-		Dimension frmSize = getSize();
-		Point loc = getLocation();
-		dlg.setLocation((frmSize.width - dlgSize.width) / 2 + loc.x, (frmSize.height - dlgSize.height) / 2 + loc.y);
-		dlg.setModal(true);
-		dlg.setVisible(true);
-	}
-
-	/* attivazione di ?>Help */
-	public void menuHelpHelp_actionPerformed(ActionEvent e) {
-		String htm = new File("").getAbsolutePath() + "/Help.htm";
-		String command = new String("C:/Programmi/Internet Explorer/iexplore.exe " + htm);
-		try {
-			Runtime.getRuntime().exec(command);
-		} catch (IOException ioe) {
-			statusBarMsg("Couldn't open your browser...");
 		}
 	}
 
@@ -801,6 +672,54 @@ public class MainFrame extends JFrame {
 
 	public void render() {
 		setVisible(true);
+	}
+
+	public void play() {
+		/*
+		 * se la partita e' ancora aperta, si crea l'albero delle scelte, quindi si fa
+		 * scegliere la mossa all'intelligenza artificiale
+		 */
+		if (!gameOver) {
+			EuristicTree tmpTree = new EuristicTree();
+			tmpTree.build(game.gameGrid, game.gameGrid.currentPlayer, game.getLevel());
+			int toPlay = tmpTree.play(game.gameGrid.currentPlayer);
+			graphicGrid.loadGrid(toPlay);
+			game.nextMove(toPlay);
+			if (game.gameGrid.currentPlayer > 0) {
+				if (!game.getPlayer1().isHuman() && game.getPlayer2().isHuman()) {
+					play();
+				}
+			} else {
+				if (!game.getPlayer2().isHuman() && game.getPlayer1().isHuman()) {
+					play();
+				}
+			}
+		}
+
+		/* se la partita non e' terminata la funzione e' abilitata */
+		if (game.getMarker() < 42) {
+			if (game.getMoves()[game.getMarker()] == -1) {
+				// if (e == null) {
+				menuBar.disableMoveForward();
+				moveForward.setEnabled(false);
+				// }
+			}
+		} else {
+			menuBar.disableMoveForward();
+			menuBar.disablePlay();
+			moveForward.setEnabled(false);
+			playHint.setEnabled(false);
+		}
+
+	}
+
+	public void startNewLocalGame() {
+		newGame.setEnabled(true);
+		menuBar.startNewLocalGame();
+
+		playHint.setEnabled(true);
+		moveForward.setEnabled(false);
+
 	}
 
 }

@@ -132,13 +132,13 @@ public class GraphicColumn extends JPanel {
 					/*
 					 * dopo aver inserito un gettone automaticamente possiamo anche toglierlo
 					 */
-					ownerGrd.ownerFrm.menuMoveBack.setEnabled(true);
+					// FIXME ownerGrd.ownerFrm.menuMoveBack.setEnabled(true);
 					ownerGrd.ownerFrm.moveBack.setEnabled(true);
 					/*
 					 * dopo aver inserito un gettone automaticamente non � possibile annullare un
 					 * Undo
 					 */
-					ownerGrd.ownerFrm.menuMoveForward.setEnabled(false);
+					// FIXME ownerGrd.ownerFrm.menuMoveForward.setEnabled(false);
 					ownerGrd.ownerFrm.moveForward.setEnabled(false);
 					/*
 					 * la 42esima � l'ultima mossa possibile: non ha pi� senso accettare i
@@ -146,7 +146,7 @@ public class GraphicColumn extends JPanel {
 					 */
 					if (ownerGrd.ownerFrm.game.noMoreMoves()) {
 						ownerGrd.ownerFrm.playHint.setEnabled(false);
-						ownerGrd.ownerFrm.menuMovePlay.setEnabled(false);
+						// FIXME ownerGrd.ownerFrm.menuMovePlay.setEnabled(false);
 					}
 				}
 				/* aggiornamento della grafica: inserzione virtuale del gettone */
@@ -237,10 +237,10 @@ public class GraphicColumn extends JPanel {
 				 */
 
 				if (ownerGrd.ownerFrm.game.gameGrid.currentPlayer > 0 && !ownerGrd.ownerFrm.game.getPlayer1().isHuman())
-					ownerGrd.ownerFrm.menuMovePlay_actionPerformed(null);
+					ownerGrd.ownerFrm.play();
 				else if (ownerGrd.ownerFrm.game.gameGrid.currentPlayer < 0
 						&& !ownerGrd.ownerFrm.game.getPlayer2().isHuman())
-					ownerGrd.ownerFrm.menuMovePlay_actionPerformed(null);
+					ownerGrd.ownerFrm.play();
 
 				synchronized (this.ownerGrd.ownerFrm) {
 					for (int i = 0; i < 7; i++)

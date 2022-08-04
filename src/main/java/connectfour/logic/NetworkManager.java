@@ -66,9 +66,9 @@ public class NetworkManager {
 		 * disabilitati i tasti ed i menu di modifica della configurazione della partita
 		 */
 		// FIXME move this step
-		gui.window.menuMoveBack.setEnabled(false);
-		gui.window.menuMovePlay.setEnabled(false);
-		gui.window.menuMoveForward.setEnabled(false);
+		// FIXME gui.window.menuMoveBack.setEnabled(false);
+		// FIXME gui.window.menuMovePlay.setEnabled(false);
+		// FIXME gui.window.menuMoveForward.setEnabled(false);
 		gui.window.newGame.setEnabled(false);
 		gui.window.moveBack.setEnabled(false);
 		gui.window.playHint.setEnabled(false);

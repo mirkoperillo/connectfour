@@ -33,7 +33,7 @@ public class GraphicGrid extends JPanel {
 	int rows = 1;
 
 	/* frame a cui il pannello appartiene */
-	MainFrame ownerFrm;
+	ApplicationWindow ownerFrm;
 
 	public GraphicColumn column[] = new GraphicColumn[7];
 
@@ -44,7 +44,7 @@ public class GraphicGrid extends JPanel {
 
 	/* metodi */
 	/* costruttore parametrico */
-	public GraphicGrid(MainFrame owner) {
+	public GraphicGrid(ApplicationWindow owner) {
 		ownerFrm = owner;
 		try {
 			init();
@@ -91,7 +91,7 @@ public class GraphicGrid extends JPanel {
 	public void loadGrid(int c) {
 		column[c].loadPawn();
 		if (!ownerFrm.game.isNetworkEnabled()) {
-			ownerFrm.menuMoveBack.setEnabled(true);
+			// FIXME ownerFrm.menuMoveBack.setEnabled(true);
 			ownerFrm.moveBack.setEnabled(true);
 		}
 	}

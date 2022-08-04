@@ -20,9 +20,9 @@ package connectfour.gui;
 
 public class ThreadMouse extends Thread {
 
-	MainFrame mf;
+	ApplicationWindow mf;
 
-	public ThreadMouse(MainFrame mf) {
+	public ThreadMouse(ApplicationWindow mf) {
 		this.mf = mf;
 	}
 

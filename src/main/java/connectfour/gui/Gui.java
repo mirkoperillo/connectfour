@@ -8,7 +8,7 @@ import connectfour.model.SavedGame;
 public class Gui {
 
 	/* variabili per la gestione del frame */
-	public MainFrame window;
+	public ApplicationWindow window;
 
 	public Game game;
 
@@ -29,7 +29,7 @@ public class Gui {
 		}
 		// networkGame = new NetworkManager(this);
 
-		window = new MainFrame(game);
+		window = new ApplicationWindow(game);
 	}
 
 	public void render() {
